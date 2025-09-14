@@ -10,13 +10,14 @@ public class Pessoa extends Usuario {
     public Pessoa() {}
 
     public Pessoa(int id, String nome, String email, String endereco, int idade) {
+        super(id, nome);
         this.email = email;
         this.endereco = endereco;
         this.idade = idade;
     }
 
     public Pessoa(int id, String nome, String email, String cep, int idade, boolean usarCep) {
-
+        super(id, nome);
         this.email = email;
         if (usarCep) {
             this.endereco = ServicoEndereco.buscarEnderecoPorCep(cep);
@@ -24,6 +25,16 @@ public class Pessoa extends Usuario {
             this.endereco = cep; 
         }
         this.idade = idade;
+    }
+
+    @Override
+    public int getId() {
+        return super.getId();
+    }
+
+    @Override
+    public String getNome() {
+        return super.getNome();
     }
 
     public String getEmail() {
