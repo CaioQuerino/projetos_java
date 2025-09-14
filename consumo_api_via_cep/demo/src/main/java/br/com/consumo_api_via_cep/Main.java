@@ -43,7 +43,7 @@ public class Main {
         Pessoa pessoa4 = new Pessoa(
             "Ana Costa", 
             "ana@empresa.com", 
-            "30130005", // CEP da Savassi - BH
+            "30130005",
             28,
             true
         );
