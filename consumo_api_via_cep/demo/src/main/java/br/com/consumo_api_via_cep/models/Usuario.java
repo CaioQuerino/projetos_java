@@ -6,6 +6,13 @@ public class Usuario implements IUsuario {
     private int id;
     private String nome;
 
+    Usuario() {};
+
+    Usuario(int id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+
     @Override
     public int getId() {
         return id;
