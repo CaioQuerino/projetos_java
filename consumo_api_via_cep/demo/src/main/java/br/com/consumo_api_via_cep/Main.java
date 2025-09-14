@@ -38,5 +38,15 @@ public class Main {
         System.out.println("Endereço atual da pessoa 1: " + pessoa1.getEndereco());
         pessoa1.setEnderecoPorCep("20040002");
         System.out.println("Novo endereço da pessoa 1: " + pessoa1.getEndereco());
+
+        System.out.println("\n=== TESTANDO OUTRO CEP ===");
+        Pessoa pessoa4 = new Pessoa(
+            "Ana Costa", 
+            "ana@empresa.com", 
+            "30130005", // CEP da Savassi - BH
+            28,
+            true
+        );
+        System.out.println("Pessoa 4: " + pessoa4);
     }
 }
