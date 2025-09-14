@@ -26,4 +26,10 @@ public class ServicoPessoa {
         }
         return email.contains("@") && email.contains(".");
     }
+
+    public static boolean validarIdade(int idade) {
+        return idade >= 0 && idade <= 150;
+    }
+
+
 }
