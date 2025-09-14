@@ -48,5 +48,12 @@ public class Main {
             true
         );
         System.out.println("Pessoa 4: " + pessoa4);
+
+        System.out.println("\n=== BUSCA DIRETA DE ENDEREÇOS ===");
+        String endereco1 = br.com.consumo_api_via_cep.services.ServicoEndereco.buscarEnderecoPorCep("80010000");
+        System.out.println("CEP 80010000: " + endereco1);
+        
+        String endereco2 = br.com.consumo_api_via_cep.services.ServicoEndereco.buscarEnderecoPorCep("01310930");
+        System.out.println("CEP 01310930: " + endereco2);
     }
 }
