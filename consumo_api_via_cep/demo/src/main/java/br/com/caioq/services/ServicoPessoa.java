@@ -19,4 +19,11 @@ public class ServicoPessoa {
             return null;
         }
     }
+
+    public static boolean validarEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return false;
+        }
+        return email.contains("@") && email.contains(".");
+    }
 }
