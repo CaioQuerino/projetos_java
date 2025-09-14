@@ -33,5 +33,10 @@ public class Main {
         System.out.println("1: " + pessoa1);
         System.out.println("2: " + pessoa2);
         System.out.println("3: " + pessoa3);
+
+        System.out.println("\n=== ATUALIZANDO ENDEREÇO POR CEP ===");
+        System.out.println("Endereço atual da pessoa 1: " + pessoa1.getEndereco());
+        pessoa1.setEnderecoPorCep("20040002");
+        System.out.println("Novo endereço da pessoa 1: " + pessoa1.getEndereco());
     }
 }
