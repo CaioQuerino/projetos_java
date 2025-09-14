@@ -1,8 +1,10 @@
 package br.com.consumo_api_via_cep.models;
 
+import br.com.consumo_api_via_cep.interfaces.Usuario;
 import br.com.consumo_api_via_cep.services.ServicoEndereco;
 
-public class Pessoa {
+public class Pessoa implements Usuario {
+    private int id;
     private String nome;
     private String email;
     private String endereco;
@@ -10,14 +12,16 @@ public class Pessoa {
 
     public Pessoa() {}
 
-    public Pessoa(String nome, String email, String endereco, int idade) {
+    public Pessoa(int id, String nome, String email, String endereco, int idade) {
+        this.id = id;
         this.nome = nome;
         this.email = email;
         this.endereco = endereco;
         this.idade = idade;
     }
 
-    public Pessoa(String nome, String email, String cep, int idade, boolean usarCep) {
+    public Pessoa(int id, String nome, String email, String cep, int idade, boolean usarCep) {
+        this.id = id;
         this.nome = nome;
         this.email = email;
         if (usarCep) {
@@ -29,6 +33,10 @@ public class Pessoa {
     }
 
     // Getters
+    public int getId() {
+        return id;
+    }
+
     public String getNome() {
         return nome;
     }
