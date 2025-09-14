@@ -7,6 +7,7 @@ public class Main {
         System.out.println("=== SISTEMA DE CADASTRO DE PESSOAS COM ENDEREÇO POR CEP ===\n");
         
         Pessoa pessoa1 = new Pessoa(
+            1,
             "João Silva", 
             "joao@email.com", 
             "Rua das Flores, 123 - São Paulo/SP", 
@@ -14,6 +15,7 @@ public class Main {
         );
         
         Pessoa pessoa2 = new Pessoa(
+            2,
             "Maria Santos", 
             "maria@email.com", 
             "01001000", 
@@ -22,6 +24,7 @@ public class Main {
         );
         
         Pessoa pessoa3 = new Pessoa(
+            3,
             "Carlos Oliveira", 
             "carlos@empresa.com", 
             "00000000", 
@@ -41,6 +44,7 @@ public class Main {
 
         System.out.println("\n=== TESTANDO OUTRO CEP ===");
         Pessoa pessoa4 = new Pessoa(
+            4,
             "Ana Costa", 
             "ana@empresa.com", 
             "30130005",
