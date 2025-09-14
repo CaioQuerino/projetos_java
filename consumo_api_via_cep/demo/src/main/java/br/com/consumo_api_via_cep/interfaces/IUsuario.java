@@ -4,4 +4,5 @@ public interface IUsuario {
     int getId();
     String getNome();
     void setNome(String nome);
+    void setId(int id);
 }
