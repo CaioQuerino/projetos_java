@@ -31,5 +31,17 @@ public class ServicoPessoa {
         return idade >= 0 && idade <= 150;
     }
 
-
+    public static Pessoa criarPessoaValidada(String nome, String email, String endereco, int idade) {
+        if (!validarEmail(email)) {
+            System.out.println("Email inválido: " + email);
+            return null;
+        }
+        
+        if (!validarIdade(idade)) {
+            System.out.println("Idade inválida: " + idade);
+            return null;
+        }
+        
+        return criarPessoa(nome, email, endereco, idade);
+    }
 }
