@@ -1,6 +1,6 @@
-package br.com.caioq.services;
+package br.com.consumo_api_via_cep.services;
 
-import br.com.caioq.models.Pessoa;
+import br.com.consumo_api_via_cep.models.Pessoa;
 
 public class ServicoPessoa {
     

@@ -1,4 +1,4 @@
-package br.com.caioq.services;
+package br.com.consumo_api_via_cep.services;
 
 import java.net.URI;
 import java.net.http.HttpClient;

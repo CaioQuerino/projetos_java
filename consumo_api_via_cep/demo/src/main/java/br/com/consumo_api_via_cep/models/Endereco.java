@@ -1,4 +1,4 @@
-package br.com.caioq.models;
+package br.com.consumo_api_via_cep.models;
 
 public class Endereco {
     private int id;

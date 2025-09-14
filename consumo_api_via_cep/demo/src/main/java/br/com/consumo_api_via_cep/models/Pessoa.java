@@ -1,6 +1,6 @@
-package br.com.caioq.models;
+package br.com.consumo_api_via_cep.models;
 
-import br.com.caioq.services.ServicoEndereco;
+import br.com.consumo_api_via_cep.services.ServicoEndereco;
 
 public class Pessoa {
     private String nome;

@@ -1,6 +1,6 @@
-package br.com.caioq;
+package br.com.consumo_api_via_cep;
 
-import br.com.caioq.models.Pessoa;
+import br.com.consumo_api_via_cep.models.Pessoa;
 
 public class Main {
     public static void main(String[] args) {
@@ -28,5 +28,10 @@ public class Main {
             30,
             true
         );
+        
+        System.out.println("Pessoas cadastradas:");
+        System.out.println("1: " + pessoa1);
+        System.out.println("2: " + pessoa2);
+        System.out.println("3: " + pessoa3);
     }
 }
