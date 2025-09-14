@@ -13,7 +13,7 @@ public class ServicoPessoa {
             pessoa.setEmail(email);
             pessoa.setEndereco(endereco);
             pessoa.setIdade(idade);
-            return pessoa; 
+            return pessoa;
         } catch (Exception e) {
             System.err.println("Erro ao criar pessoa: " + e.getMessage());
             return null;
@@ -43,5 +43,29 @@ public class ServicoPessoa {
         }
         
         return criarPessoa(nome, email, endereco, idade);
+    }
+    
+    public static Pessoa criarPessoaComCep(String nome, String email, String cep, int idade) {
+        if (!validarEmail(email)) {
+            System.out.println("Email inválido: " + email);
+            return null;
+        }
+        
+        if (!validarIdade(idade)) {
+            System.out.println("Idade inválida: " + idade);
+            return null;
+        }
+        
+        try {
+            Pessoa pessoa = new Pessoa();
+            pessoa.setNome(nome);
+            pessoa.setEmail(email);
+            pessoa.setEnderecoPorCep(cep); // Busca endereço pelo CEP
+            pessoa.setIdade(idade);
+            return pessoa;
+        } catch (Exception e) {
+            System.err.println("Erro ao criar pessoa com CEP: " + e.getMessage());
+            return null;
+        }
     }
 }
