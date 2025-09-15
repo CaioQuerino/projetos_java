@@ -84,4 +84,21 @@ public class ServicoRegistro {
             return "Erro: Dados inválidos para atualização";
         }
     }
+    
+    public String atualizarPessoaComCep(int id, String nome, String email, String cep, int idade) {
+        Pessoa pessoaExistente = (Pessoa) pessoaData.buscarPorId(id);
+        
+        if (pessoaExistente == null) {
+            return "Erro: Pessoa não encontrada com ID: " + id;
+        }
+        
+        Pessoa pessoaAtualizada = ServicoPessoa.criarPessoaComCep(nome, email, cep, idade);
+        
+        if (pessoaAtualizada != null) {
+            pessoaAtualizada.setId(id); // Mantém o mesmo ID
+            return pessoaData.atualizar(id, pessoaAtualizada);
+        } else {
+            return "Erro: Dados inválidos para atualização";
+        }
+    }
 }
