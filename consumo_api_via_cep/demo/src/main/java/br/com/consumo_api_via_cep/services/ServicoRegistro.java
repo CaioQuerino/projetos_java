@@ -24,4 +24,14 @@ public class ServicoRegistro {
             return "Erro: Não foi possível criar a pessoa. Verifique os dados.";
         }
     }
+    
+    public String registrarPessoaComCep(String nome, String email, String cep, int idade) {
+        Pessoa pessoa = ServicoPessoa.criarPessoaComCep(nome, email, cep, idade);
+        
+        if (pessoa != null) {
+            return pessoaData.salvar(pessoa);
+        } else {
+            return "Erro: Não foi possível criar a pessoa. Verifique os dados.";
+        }
+    }
 } 
