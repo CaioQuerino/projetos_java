@@ -54,4 +54,8 @@ public class ServicoRegistro {
     public Pessoa buscarPessoaPorId(int id) {
         return (Pessoa) pessoaData.buscarPorId(id);
     }
+    
+    public Pessoa buscarPessoaPorEmail(String email) {
+        return pessoaData.buscarPorEmail(email);
+    }
 } 
