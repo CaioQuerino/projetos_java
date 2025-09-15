@@ -50,4 +50,8 @@ public class ServicoRegistro {
             return "Erro: Pessoa não pode ser nula";
         }
     }
+    
+    public Pessoa buscarPessoaPorId(int id) {
+        return (Pessoa) pessoaData.buscarPorId(id);
+    }
 } 
