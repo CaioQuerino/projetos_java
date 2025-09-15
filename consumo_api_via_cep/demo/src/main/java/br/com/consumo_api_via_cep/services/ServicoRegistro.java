@@ -34,4 +34,20 @@ public class ServicoRegistro {
             return "Erro: Não foi possível criar a pessoa. Verifique os dados.";
         }
     }
+    
+    public String registrarPessoa(Pessoa pessoa) {
+        if (pessoa != null) {
+            if (!ServicoPessoa.validarEmail(pessoa.getEmail())) {
+                return "Erro: Email inválido";
+            }
+            
+            if (!ServicoPessoa.validarIdade(pessoa.getIdade())) {
+                return "Erro: Idade inválida";
+            }
+            
+            return pessoaData.salvar(pessoa);
+        } else {
+            return "Erro: Pessoa não pode ser nula";
+        }
+    }
 } 
