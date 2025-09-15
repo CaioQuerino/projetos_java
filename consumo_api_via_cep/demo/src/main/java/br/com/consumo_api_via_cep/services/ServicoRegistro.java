@@ -105,4 +105,8 @@ public class ServicoRegistro {
     public String deletarPessoa(int id) {
         return pessoaData.deletar(id);
     }
+    
+    public int getTotalPessoasRegistradas() {
+        return pessoaData.getTotalPessoas();
+    }
 }
