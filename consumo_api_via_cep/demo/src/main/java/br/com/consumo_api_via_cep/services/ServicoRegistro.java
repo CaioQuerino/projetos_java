@@ -101,4 +101,8 @@ public class ServicoRegistro {
             return "Erro: Dados inválidos para atualização";
         }
     }
+    
+    public String deletarPessoa(int id) {
+        return pessoaData.deletar(id);
+    }
 }
