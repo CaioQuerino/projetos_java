@@ -1,5 +1,6 @@
 package br.com.consumo_api_via_cep.services;
 
+import java.util.List;
 import br.com.consumo_api_via_cep.data.PessoaData;
 import br.com.consumo_api_via_cep.models.Pessoa;
 
@@ -58,4 +59,8 @@ public class ServicoRegistro {
     public Pessoa buscarPessoaPorEmail(String email) {
         return pessoaData.buscarPorEmail(email);
     }
-} 
+    
+    public List<Pessoa> buscarPessoasPorNome(String nome) {
+        return pessoaData.buscarPorNome(nome);
+    }
+}
