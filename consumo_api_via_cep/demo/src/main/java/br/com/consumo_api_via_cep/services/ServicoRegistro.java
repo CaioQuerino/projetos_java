@@ -63,4 +63,8 @@ public class ServicoRegistro {
     public List<Pessoa> buscarPessoasPorNome(String nome) {
         return pessoaData.buscarPorNome(nome);
     }
+    
+    public List<Pessoa> listarTodasPessoas() {
+        return pessoaData.listarTodasPessoas();
+    }
 }
