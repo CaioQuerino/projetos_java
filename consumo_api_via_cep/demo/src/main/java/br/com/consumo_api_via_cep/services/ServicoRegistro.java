@@ -67,4 +67,21 @@ public class ServicoRegistro {
     public List<Pessoa> listarTodasPessoas() {
         return pessoaData.listarTodasPessoas();
     }
+    
+    public String atualizarPessoa(int id, String nome, String email, String endereco, int idade) {
+        Pessoa pessoaExistente = (Pessoa) pessoaData.buscarPorId(id);
+        
+        if (pessoaExistente == null) {
+            return "Erro: Pessoa não encontrada com ID: " + id;
+        }
+        
+        Pessoa pessoaAtualizada = ServicoPessoa.criarPessoaValidada(nome, email, endereco, idade);
+        
+        if (pessoaAtualizada != null) {
+            pessoaAtualizada.setId(id); // Mantém o mesmo ID
+            return pessoaData.atualizar(id, pessoaAtualizada);
+        } else {
+            return "Erro: Dados inválidos para atualização";
+        }
+    }
 }
