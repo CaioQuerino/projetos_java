@@ -109,4 +109,8 @@ public class ServicoRegistro {
     public int getTotalPessoasRegistradas() {
         return pessoaData.getTotalPessoas();
     }
+    
+    public PessoaData getPessoaData() {
+        return pessoaData;
+    }
 }
