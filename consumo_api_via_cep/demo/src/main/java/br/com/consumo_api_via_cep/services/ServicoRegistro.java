@@ -78,7 +78,7 @@ public class ServicoRegistro {
         Pessoa pessoaAtualizada = ServicoPessoa.criarPessoaValidada(nome, email, endereco, idade);
         
         if (pessoaAtualizada != null) {
-            pessoaAtualizada.setId(id); // Mantém o mesmo ID
+            pessoaAtualizada.setId(id);
             return pessoaData.atualizar(id, pessoaAtualizada);
         } else {
             return "Erro: Dados inválidos para atualização";
@@ -95,7 +95,7 @@ public class ServicoRegistro {
         Pessoa pessoaAtualizada = ServicoPessoa.criarPessoaComCep(nome, email, cep, idade);
         
         if (pessoaAtualizada != null) {
-            pessoaAtualizada.setId(id); // Mantém o mesmo ID
+            pessoaAtualizada.setId(id);
             return pessoaData.atualizar(id, pessoaAtualizada);
         } else {
             return "Erro: Dados inválidos para atualização";
