@@ -113,4 +113,8 @@ public class ServicoRegistro {
     public PessoaData getPessoaData() {
         return pessoaData;
     }
+    
+    public void setPessoaData(PessoaData pessoaData) {
+        this.pessoaData = pessoaData;
+    }
 }
