@@ -1,6 +1,8 @@
 package br.com.consumo_api_via_cep.models;
 
-public class Produto extends Usuario {
+public class Produto {
+    private int id;
+    private String nome;
     private double preco;
     private String descricao;
     private String categoria;
@@ -10,21 +12,20 @@ public class Produto extends Usuario {
 
     Produto(int id, String nome, double preco, String descricao, 
                                 String categoria, int quantidade) {
-        super(id, nome);
+        this.id = id;
+        this.nome = nome;                            
         this.preco = preco;
         this.descricao = descricao;
         this.categoria = categoria;
         this.quantidade = quantidade;
     }
 
-    @Override
     public int getId() {
-        return super.getId();
+        return id;
     }
 
-    @Override
     public String getNome() {
-        return super.getNome();
+        return nome;
     }
 
     public double getPreco() {
@@ -43,14 +44,12 @@ public class Produto extends Usuario {
         return quantidade;
     }
 
-    @Override
     public void setId(int id) {
-        super.setId(id);
+        this.id = id;
     }
 
-    @Override
     public void setNome(String nome) {
-        super.setNome(nome);
+        this.nome = nome;
     }
 
     public void setPreco(double preco) {
