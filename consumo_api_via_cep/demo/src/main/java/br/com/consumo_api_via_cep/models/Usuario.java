@@ -12,23 +12,19 @@ public class Usuario implements IUsuario {
         this.id = id;
         this.nome = nome;
     }
-
-    @Override
+    
     public int getId() {
         return id;
     }
-
-    @Override
+    
     public String getNome() {
         return nome;
     }
-
-    @Override
+    
     public void setId(int id) {
         this.id = id;        
     }
-
-    @Override
+    
     public void setNome(String nome) {
         this.nome = nome;
     }
