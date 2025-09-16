@@ -117,4 +117,8 @@ public class ServicoRegistro {
     public void setPessoaData(PessoaData pessoaData) {
         this.pessoaData = pessoaData;
     }
+    
+    public void limparRegistros() {
+        pessoaData.limparDados();
+    }
 }
