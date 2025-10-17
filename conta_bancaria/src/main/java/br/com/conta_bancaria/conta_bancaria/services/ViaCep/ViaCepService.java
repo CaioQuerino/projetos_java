@@ -22,7 +22,7 @@ public class ViaCepService {
 
     public Optional<ViaCepDto> buscarEndereco(String cep) {
         if (cep == null || !cep.matches("\\d{8}")) {
-            System.err.println("❌ CEP inválido: " + cep);
+            System.err.println("CEP inválido: " + cep);
             return Optional.empty();
         }
 
@@ -30,15 +30,15 @@ public class ViaCepService {
             ViaCep endereco = restTemplate.getForObject(VIA_CEP_URL, ViaCep.class, cep);
 
             if (endereco == null || endereco.getCep() == null) {
-                System.out.println("❌ CEP não encontrado: " + cep);
+                System.out.println("CEP não encontrado: " + cep);
                 return Optional.empty();
             }
 
-            System.out.println("✅ Endereço encontrado: " + endereco);
+            System.out.println("Endereço encontrado: " + endereco);
             return Optional.of(endereco);
 
         } catch (RestClientException e) {
-            System.err.println("⚠️ Erro ao buscar CEP " + cep + ": " + e.getMessage());
+            System.err.println("Erro ao buscar CEP " + cep + ": " + e.getMessage());
             return Optional.empty();
         }
     }
