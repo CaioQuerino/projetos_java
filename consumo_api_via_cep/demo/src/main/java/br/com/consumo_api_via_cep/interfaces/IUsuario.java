@@ -1,8 +1,0 @@
-package br.com.consumo_api_via_cep.interfaces;
-
-public interface IUsuario {
-    int getId();
-    String getNome();
-    void setNome(String nome);
-    void setId(int id);
-}
