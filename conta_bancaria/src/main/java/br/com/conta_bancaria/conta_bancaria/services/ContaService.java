@@ -1,18 +1,20 @@
 package br.com.conta_bancaria.conta_bancaria.services;
 
 import org.springframework.stereotype.Service;
+
+import br.com.conta_bancaria.conta_bancaria.models.Conta;
 import br.com.conta_bancaria.conta_bancaria.models.Banco;
 import br.com.conta_bancaria.conta_bancaria.models.Cliente;
-import br.com.conta_bancaria.conta_bancaria.models.Conta;
-import br.com.conta_bancaria.conta_bancaria.Repository.ContaRepository;
+import br.com.conta_bancaria.conta_bancaria.repository.RepositoryConta;
+
 
 @Service
 public class ContaService {
 
-    private final ContaRepository contaRepository;
+    private final RepositoryConta repositoryConta;
 
-    public ContaService(ContaRepository contaRepository) {
-        this.contaRepository = contaRepository;
+    public ContaService(RepositoryConta repositoryConta) {
+        this.repositoryConta = repositoryConta;
     }
 
     /**
@@ -33,7 +35,7 @@ public class ContaService {
         }
 
         Conta conta = new Conta(numeroConta, tipoConta, saldoInicial, cliente, banco, senha);
-        return contaRepository.save(conta);
+        return repositoryConta.save(conta);
     }
 
     /**
@@ -42,7 +44,7 @@ public class ContaService {
      * @return 
      */
     public Conta buscarPorNumero(String numeroConta) {
-        return contaRepository.findByNumeroConta(numeroConta)
+        return repositoryConta.findByNumeroConta(numeroConta)
                 .orElseThrow(() -> new RuntimeException("Conta não encontrada: " + numeroConta));
     }
 }
