@@ -1,7 +1,7 @@
 package br.com.conta_bancaria.conta_bancaria.controllers;
 
 import org.springframework.web.bind.annotation.*;
-import br.com.conta_bancaria.conta_bancaria.models.*;
+import br.com.conta_bancaria.conta_bancaria.models.Conta;
 import br.com.conta_bancaria.conta_bancaria.services.ContaService;
 
 @RestController
