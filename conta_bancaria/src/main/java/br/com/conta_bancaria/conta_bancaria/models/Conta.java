@@ -14,11 +14,11 @@ public class Conta {
     private String tipoConta;
     private double saldo;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
     
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "banco_id")
     private Banco banco;
     
