@@ -19,7 +19,6 @@ public class ContaController {
     @PostMapping
     public Conta criarConta(@RequestBody Conta conta) {
         return this.contaService.criarConta(
-            conta.getNumeroConta(),
             conta.getTipoConta(),
             conta.getSaldo(),
             conta.getCliente(),
