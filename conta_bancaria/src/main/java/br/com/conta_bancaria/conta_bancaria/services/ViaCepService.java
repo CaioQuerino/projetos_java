@@ -6,7 +6,7 @@ import org.springframework.web.client.RestClientException;
 
 import br.com.conta_bancaria.conta_bancaria.interfaces.ViaCepDto;
 import br.com.conta_bancaria.conta_bancaria.models.ViaCep;
-import br.com.conta_bancaria.conta_bancaria.models.ViaCep.*;
+import br.com.conta_bancaria.conta_bancaria.models.ViaCep;
 
 import java.util.Optional;
 
