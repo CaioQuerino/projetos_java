@@ -71,6 +71,7 @@ public class ContaService {
         Banco bancoSalvo = repositoryBanco.save(banco);
         
         cliente.setAgencia(agencia); 
+        banco.setAgencia(agencia);
         Cliente clienteSalvo = repositoryCliente.save(cliente);
 
         Conta conta = new Conta(numeroConta, tipoConta, saldoInicial, clienteSalvo, bancoSalvo, senha);
