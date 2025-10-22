@@ -11,6 +11,7 @@ import br.com.conta_bancaria.conta_bancaria.repository.RepositoryBanco;
 import br.com.conta_bancaria.conta_bancaria.repository.RepositoryCliente;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -20,14 +21,17 @@ public class ContaService {
     private final RepositoryBanco repositoryBanco;
     private final RepositoryCliente repositoryCliente;
     private final Random random = new Random();
+    private final BancoService bancoService;
 
     public ContaService(RepositoryConta repositoryConta, 
                        RepositoryBanco repositoryBanco,
                        RepositoryCliente repositoryCliente
+                       BancoService bancoService
     ) {
         this.repositoryConta = repositoryConta;
         this.repositoryBanco = repositoryBanco;
         this.repositoryCliente = repositoryCliente;
+        this.bancoService = bancoService;
       }
 
     /**
@@ -63,6 +67,16 @@ public class ContaService {
                             Cliente cliente, Banco banco, String senha) {
         if (cliente == null || banco == null) {
             throw new IllegalArgumentException("Cliente e Banco são obrigatórios para criar uma conta.");
+        }
+
+        Optional<Banco> bancoExistente = bancoService.buscarPorCodigoBanco(banco.getCodigoBanco());
+        
+        if (bancoExistente.isPresent()) {
+            // Usar banco existente
+            banco = bancoExistente.get();
+        } else {
+            // Salvar novo banco
+            banco = bancoService.salvar(banco);
         }
 
         String numeroConta = gerarNumeroConta();
