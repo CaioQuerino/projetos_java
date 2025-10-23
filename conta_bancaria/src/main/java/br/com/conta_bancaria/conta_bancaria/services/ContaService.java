@@ -25,7 +25,7 @@ public class ContaService {
 
     public ContaService(RepositoryConta repositoryConta, 
                        RepositoryBanco repositoryBanco,
-                       RepositoryCliente repositoryCliente
+                       RepositoryCliente repositoryCliente,
                        BancoService bancoService
     ) {
         this.repositoryConta = repositoryConta;
