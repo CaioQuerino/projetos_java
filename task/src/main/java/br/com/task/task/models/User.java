@@ -31,7 +31,7 @@ public class User {
     
     public Long getId() { return this.id; }
     
-    public Long setId(Long id) { return this.id; }
+    public void setId(Long id) { this.id = id; }
 
     public List<Task> getTask() { return tasks; } 
 
