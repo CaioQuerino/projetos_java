@@ -10,16 +10,16 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String tarefa;
+    private String titulo;
     private String descricao;
     private boolean concluido = false;
 
     public Task() {}
 
-    public Task(Long id, String tarefa, String descricao, boolean concluido) 
+    public Task(Long id, String titulo, String descricao, boolean concluido) 
     {
         this.id = id;
-        this.tarefa = tarefa;
+        this.titulo = titulo;
         this.descricao = descricao;
         this.concluido = concluido;
     }
@@ -28,9 +28,9 @@ public class Task {
 
     public void setId(Long id) { this.id = id; }
 
-    public String getTarefa() { return tarefa; }
+    public String getTitulo() { return titulo; }
 
-    public void setTarefa(String tarefa) { this.tarefa = tarefa; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
 
     public String getDescricao() { return descricao; }
 
