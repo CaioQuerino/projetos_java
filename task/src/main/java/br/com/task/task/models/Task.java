@@ -28,15 +28,15 @@ public class Task {
 
     public void setId(Long id) { this.id = id; }
 
-    public String getTarefa() { return this.tarefa; }
+    public String getTarefa() { return tarefa; }
 
     public void setTarefa(String tarefa) { this.tarefa = tarefa; }
 
-    public String getDescricao() { return this.descricao; }
+    public String getDescricao() { return descricao; }
 
     public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public boolean getConcluido() { return this.concluido; }
+    public boolean getConcluido() { return concluido; }
 
     public void setConcluido(boolean concluido) { this.concluido = concluido; }
 }
