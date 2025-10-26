@@ -33,9 +33,9 @@ public class User {
     
     public Long setId(Long id) { return this.id; }
 
-    public Task getTask() { return this.task; } 
+    public List<Task> getTask() { return tasks; } 
 
-    public void setTask(Task task) { this.task = task; } 
+    public void setTask(List<Task> tasks) { this.tasks = tasks; } 
     
     public String getNome() { return this.nome; }
     
