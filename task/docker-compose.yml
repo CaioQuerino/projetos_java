@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: Task
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Fake123
+      MYSQL_DATABASE: task
+      MYSQL_USER: fake
+      MYSQL_PASSWORD: fake123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: ["mysqld", "--default-authentication-plugin=mysql_native_password"]
+
+volumes:
+  mysql_data:
