@@ -9,6 +9,5 @@ import br.com.task.task.models.User;
 
 @Repository
 public interface RepositoryUser extends JpaRepository<User, Long> {
-    Optional<User> findUser(Long id);
-
+    Optional<User> findByEmail(String email);
 }
