@@ -1,4 +1,5 @@
 package br.com.task.task.models;
+import java.util.List;
 
 import jakarta.persistence.*;
 
@@ -13,7 +14,10 @@ public class User {
     private String nome;
     private String email;
     private String senha;
-    private Task task;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<Task> tasks;
     
     public User() {}
 
