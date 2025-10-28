@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import br.com.conta_bancaria.conta_bancaria.models.Banco;
 import br.com.conta_bancaria.conta_bancaria.services.BancoService;
+import br.com.conta_bancaria.conta_bancaria.dto.requests.banco.CreateBancoRequest;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.ApiResponse;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.banco.BancoResponse;
 
@@ -66,10 +67,40 @@ public class BancoController {
                    .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public Banco criarBanco(@RequestBody Banco banco) {
-        return bancoService.salvar(banco);
+@PostMapping
+public ResponseEntity<ApiResponse<BancoResponse>> criarBanco(@RequestBody CreateBancoRequest request) 
+{
+    try {
+        // Converter request para entidade
+        Banco banco = new Banco(
+            request.getNome(),
+            request.getEndereco(),
+            request.getTelefone(),
+            request.getCnpj(),
+            request.getAgencia(),
+            request.getCodigoBanco()
+        );
+        
+        Banco bancoSalvo = bancoService.salvar(banco);
+        
+        // Converter entidade para response
+        BancoResponse response = new BancoResponse(
+            bancoSalvo.getId(),
+            bancoSalvo.getNome(),
+            bancoSalvo.getEndereco(),
+            bancoSalvo.getTelefone(),
+            bancoSalvo.getCnpj(),
+            bancoSalvo.getAgencia(),
+            bancoSalvo.getCodigoBanco()
+        );
+        
+        return ResponseEntity.ok(ApiResponse.success("Banco criado com sucesso", response));
+        
+    } catch (Exception e) {
+        return ResponseEntity.badRequest()
+                .body(ApiResponse.error("Erro ao criar banco: " + e.getMessage()));
     }
+}
 
     @PutMapping("/{id}")
     public ResponseEntity<Banco> atualizarBanco(@PathVariable Long id, @RequestBody Banco banco) {
