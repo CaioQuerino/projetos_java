@@ -20,18 +20,20 @@ public class ContaService {
     private final RepositoryConta repositoryConta;
     private final RepositoryBanco repositoryBanco;
     private final RepositoryCliente repositoryCliente;
+    private final ClienteService clienteService;
     private final Random random = new Random();
     private final BancoService bancoService;
 
     public ContaService(RepositoryConta repositoryConta, 
                        RepositoryBanco repositoryBanco,
                        RepositoryCliente repositoryCliente,
-                       BancoService bancoService
-    ) {
+                       BancoService bancoService,
+                       ClienteService clienteService) {
         this.repositoryConta = repositoryConta;
         this.repositoryBanco = repositoryBanco;
         this.repositoryCliente = repositoryCliente;
         this.bancoService = bancoService;
+        this.clienteService = clienteService;
       }
 
     /**
@@ -57,38 +59,38 @@ public class ContaService {
      * Cria uma nova conta bancária com números automáticos
      * @param tipoConta
      * @param saldoInicial
-     * @param cliente
-     * @param banco
+     * @param clienteId
+     * @param bancoId
      * @param senha
      * @return 
      */
     @Transactional
     public Conta criarConta(String tipoConta, double saldoInicial,
-                            Cliente cliente, Banco banco, String senha) {
-        if (cliente == null || banco == null) {
-            throw new IllegalArgumentException("Cliente e Banco são obrigatórios para criar uma conta.");
-        }
-
-        Optional<Banco> bancoExistente = bancoService.buscarPorCodigoBanco(banco.getCodigoBanco());
+                           Long clienteId, Long bancoId, String senha) {
         
-        if (bancoExistente.isPresent()) {
-            // Usar banco existente
-            banco = bancoExistente.get();
-        } else {
-            // Salvar novo banco
-            banco = bancoService.salvar(banco);
-        }
+        // Buscar cliente existente
+        Cliente cliente = clienteService.buscarPorId(clienteId)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com id: " + clienteId));
+        
+        // Buscar banco existente
+        Banco banco = bancoService.buscarPorId(bancoId)
+                .orElseThrow(() -> new RuntimeException("Banco não encontrado com id: " + bancoId));
 
         String numeroConta = gerarNumeroConta();
         String agencia = gerarNumeroAgencia();
 
-        Banco bancoSalvo = repositoryBanco.save(banco);
-        
-        cliente.setAgencia(agencia); 
+        // Atualizar agência no cliente e banco
+        cliente.setAgencia(agencia);
         banco.setAgencia(agencia);
-        Cliente clienteSalvo = repositoryCliente.save(cliente);
 
-        Conta conta = new Conta(numeroConta, tipoConta, saldoInicial, clienteSalvo, bancoSalvo, senha);
+        // Salvar atualizações
+        Cliente clienteAtualizado = repositoryCliente.save(cliente);
+        Banco bancoAtualizado = repositoryBanco.save(banco);
+
+        // Criar e salvar conta
+        Conta conta = new Conta(numeroConta, tipoConta, saldoInicial, 
+                               clienteAtualizado, bancoAtualizado, senha);
+        
         return repositoryConta.save(conta);
     }
 
@@ -108,5 +110,12 @@ public class ContaService {
      */
     public List<Conta> listarTodas() {
         return repositoryConta.findAll();
+    }
+
+    /**
+     * Busca conta por ID
+     */
+    public Optional<Conta> buscarPorId(Long id) {
+        return repositoryConta.findById(id);
     }
 }
