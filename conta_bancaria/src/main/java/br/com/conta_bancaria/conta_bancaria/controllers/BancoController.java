@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import br.com.conta_bancaria.conta_bancaria.models.Banco;
 import br.com.conta_bancaria.conta_bancaria.services.BancoService;
+import br.com.conta_bancaria.conta_bancaria.builders.BancoBuilder;
 import br.com.conta_bancaria.conta_bancaria.dto.requests.banco.CreateBancoRequest;
 import br.com.conta_bancaria.conta_bancaria.dto.requests.banco.UpdateBancoRequest;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.ApiResponse;
@@ -76,14 +77,14 @@ public class BancoController {
     @PostMapping
     public ResponseEntity<ApiResponse<BancoResponse>> criarBanco(@RequestBody CreateBancoRequest request) {
         try {
-            Banco banco = new Banco(
-                request.getNome(),
-                request.getEndereco(),
-                request.getTelefone(),
-                request.getCnpj(),
-                request.getAgencia(),
-                request.getCodigoBanco()
-            );
+            Banco banco = new BancoBuilder()
+                .nome(request.getNome())
+                .endereco(request.getEndereco())
+                .telefone(request.getTelefone())
+                .cnpj(request.getCnpj())
+                .agencia(request.getAgencia())
+                .codigoBanco(request.getCodigoBanco())
+                .build();
             
             Banco bancoSalvo = bancoService.salvar(banco);
             BancoResponse response = convertToResponse(bancoSalvo);
@@ -98,14 +99,14 @@ public class BancoController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<BancoResponse>> atualizarBanco(@PathVariable Long id, @RequestBody UpdateBancoRequest request) {
         try {
-            Banco bancoAtualizado = new Banco(
-                request.getNome(),
-                request.getEndereco(),
-                request.getTelefone(),
-                request.getCnpj(),
-                request.getAgencia(),
-                request.getCodigoBanco()  
-            );
+            Banco bancoAtualizado = new BancoBuilder()
+                .nome(request.getNome())
+                .endereco(request.getEndereco())
+                .telefone(request.getTelefone())
+                .cnpj(request.getCnpj())
+                .agencia(request.getAgencia())
+                .codigoBanco(request.getCodigoBanco())
+                .build();
             
             Banco banco = bancoService.atualizar(id, bancoAtualizado);
             BancoResponse response = convertToResponse(banco);
