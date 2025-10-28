@@ -10,6 +10,7 @@ import br.com.conta_bancaria.conta_bancaria.models.Conta;
 import br.com.conta_bancaria.conta_bancaria.services.ContaService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/contas")
@@ -47,11 +48,21 @@ public class ContaController {
     }
 
     @GetMapping
-    public List<Conta> listarTodasContas() {
-        return contaService.listarTodas();
+    public ResponseEntity<ApiResponse<List<ContaResponse>>> listarTodasContas() {
+        try {
+            List<Conta> contas = contaService.listarTodas();
+            List<ContaResponse> responses = contas.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+            
+            return ResponseEntity.ok(ApiResponse.success("Contas listadas com sucesso", responses));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                .body(ApiResponse.error("Erro ao listar contas: " + e.getMessage()));
+        }
     }
 
-        /**
+    /**
      * Método auxiliar para converter Entidade para Response DTO
      */
     private ContaResponse convertToResponse(Conta conta) {
