@@ -1,6 +1,7 @@
 package br.com.conta_bancaria.conta_bancaria.dto.responses.conta;
 
 public class ContaResponse {
+    private String agencia;
     private String numeroConta;
     private String tipoConta;
     private double saldo;
@@ -8,9 +9,10 @@ public class ContaResponse {
     private String nomeBanco;
     
 
-    public ContaResponse(String numeroConta, String tipoConta, double saldo, 
-                                    String nomeCliente, String nomeBanco) 
+    public ContaResponse(String agencia, String numeroConta, String tipoConta, 
+                            double saldo, String nomeCliente, String nomeBanco) 
     {
+        this.agencia = agencia;
         this.numeroConta = numeroConta;
         this.tipoConta = tipoConta;
         this.saldo = saldo;
@@ -18,6 +20,9 @@ public class ContaResponse {
         this.nomeBanco = nomeBanco;
     }
 
+    public String getAgencia() { return agencia; }
+
+    public void setAgencia(String agencia) { this.agencia = agencia; }
 
     public String getNumeroConta() { return numeroConta; }
 
