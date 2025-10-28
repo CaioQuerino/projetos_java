@@ -2,12 +2,15 @@ package br.com.conta_bancaria.conta_bancaria.controllers;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import br.com.conta_bancaria.conta_bancaria.models.Banco;
 import br.com.conta_bancaria.conta_bancaria.services.BancoService;
+import br.com.conta_bancaria.conta_bancaria.dto.responses.ApiResponse;
+import br.com.conta_bancaria.conta_bancaria.dto.responses.banco.BancoResponse;
 
 @RestController
 @RequestMapping("/bancos")
@@ -20,8 +23,33 @@ public class BancoController {
     }
 
     @GetMapping
-    public List<Banco> listarTodos() {
-        return bancoService.listarTodos();
+    public ResponseEntity<ApiResponse<List<BancoResponse>>> listarTodos() {
+        try {
+            List<Banco> banco = bancoService.listarTodos();
+            List<BancoResponse> responses = banco.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+            
+            return ResponseEntity.ok(ApiResponse.success("Bancos listados com sucesso", responses));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                .body(ApiResponse.error("Erro ao listar contas: " + e.getMessage()));
+        }
+    }
+
+    /**
+     * Método auxiliar para converter Entidade para Response DTO
+     */
+    private BancoResponse convertToResponse(Banco banco) {
+        return new BancoResponse(
+            banco.getId(),
+            banco.getNome(),
+            banco.getEndereco(),
+            banco.getTelefone(),
+            banco.getCnpj(),
+            banco.getAgencia(),
+            banco.getCodigoBanco()
+        );
     }
 
     @GetMapping("/{id}")
