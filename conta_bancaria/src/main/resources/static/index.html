@@ -20,6 +20,7 @@
             <button class="tab-button active" onclick="openTab('criar-conta')">Criar Conta</button>
             <button class="tab-button" onclick="openTab('buscar-conta')">Buscar Conta</button>
             <button class="tab-button" onclick="openTab('listar-contas')">Listar Contas</button>
+            <button class="tab-button" onclick="openTab('gerenciar')">Gerenciar</button>
             <button class="tab-button" onclick="openTab('privacidade')">Privacidade</button>
         </nav>
 
@@ -52,10 +53,10 @@
                         <label for="tipoConta">Tipo de Conta:</label>
                         <select id="tipoConta" name="tipoConta" required>
                             <option value="">Selecione o tipo...</option>
-                            <option value="Corrente">Corrente</option>
-                            <option value="Poupança">Poupança</option>
-                            <option value="Salário">Salário</option>
-                            <option value="Universitaria">Universitária</option>
+                            <option value="CORRENTE">Corrente</option>
+                            <option value="POUPANCA">Poupança</option>
+                            <option value="SALARIO">Salário</option>
+                            <option value="UNIVERSITARIA">Universitária</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -146,7 +147,6 @@
                         <label for="uf">UF:</label>
                         <select id="uf" name="uf" required>
                             <option value="">Selecione...</option>
-                            <option value="">Selecione...</option>
                             <option value="AC">AC</option>
                             <option value="AL">AL</option>
                             <option value="AP">AP</option>
@@ -173,7 +173,8 @@
                             <option value="SC">SC</option>
                             <option value="SP">SP</option>
                             <option value="SE">SE</option>
-                            <option value="TO">TO</option>                        </select>
+                            <option value="TO">TO</option>
+                        </select>
                     </div>
                 </div>
 
@@ -293,7 +294,7 @@
                 <p>🔒 A busca retorna apenas informações não sensíveis. Dados como CPF e CNPJ são mascarados por segurança.</p>
             </div>
             <div class="search-container">
-                <input type="text" id="numeroBusca" placeholder="Digite o número da conta" maxlength="6">
+                <input type="text" id="numeroBusca" placeholder="Digite o número da conta (6 dígitos)" maxlength="6" pattern="[0-9]{6}">
                 <button onclick="buscarConta()" class="btn-primary">Buscar</button>
             </div>
             <div id="resultado-busca" class="result-container"></div>
@@ -305,8 +306,25 @@
             <div class="security-notice">
                 <p>🔒 Dados sensíveis são mascarados para proteger a privacidade dos clientes.</p>
             </div>
-            <button onclick="listarContas()" class="btn-primary">Carregar Contas</button>
+            <button onclick="listarContas()" class="btn-primary">Carregar Todas as Contas</button>
             <div id="lista-contas" class="table-container"></div>
+        </div>
+
+        <!-- Tab: Gerenciar -->
+        <div id="gerenciar" class="tab-content">
+            <h2>⚙️ Gerenciar Dados</h2>
+            <div class="management-grid">
+                <div class="management-card">
+                    <h3>👤 Clientes</h3>
+                    <button onclick="listarClientes()" class="btn-secondary">Listar Clientes</button>
+                    <div id="lista-clientes" class="table-container" style="margin-top: 15px;"></div>
+                </div>
+                <div class="management-card">
+                    <h3>🏦 Bancos</h3>
+                    <button onclick="listarBancos()" class="btn-secondary">Listar Bancos</button>
+                    <div id="lista-bancos" class="table-container" style="margin-top: 15px;"></div>
+                </div>
+            </div>
         </div>
 
         <!-- Tab: Privacidade -->
@@ -385,9 +403,20 @@
                 <span class="close" onclick="closeModal('privacyModal')">&times;</span>
                 <h2>Política de Privacidade</h2>
                 <div class="modal-body">
-                    <p>Nos comprometemos a proteger seus dados pessoais...</p>
-                    <!-- Conteúdo completo da política -->
+                    <p>Nos comprometemos a proteger seus dados pessoais conforme a Lei Geral de Proteção de Dados (LGPD).</p>
+                    <p><strong>Coleta de Dados:</strong> Coletamos apenas informações necessárias para a criação e gestão de contas bancárias.</p>
+                    <p><strong>Uso de Dados:</strong> Seus dados são utilizados exclusivamente para operações bancárias e conformidade legal.</p>
+                    <p><strong>Compartilhamento:</strong> Não compartilhamos seus dados com terceiros sem seu consentimento explícito.</p>
+                    <p><strong>Segurança:</strong> Implementamos medidas técnicas e organizacionais para proteger seus dados.</p>
                 </div>
+            </div>
+        </div>
+
+        <!-- Status do Sistema -->
+        <div class="system-status">
+            <div id="status-conexao" class="status-item">
+                <span class="status-indicator" id="status-indicator">●</span>
+                <span id="status-text">Verificando conexão...</span>
             </div>
         </div>
     </div>

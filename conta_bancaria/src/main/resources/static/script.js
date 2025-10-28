@@ -12,6 +12,9 @@ function openTab(tabName) {
     
     document.getElementById(tabName).classList.add('active');
     event.currentTarget.classList.add('active');
+    
+    // Salvar tab ativa
+    localStorage.setItem('activeTab', tabName);
 }
 
 // Notificações
@@ -32,7 +35,6 @@ function showPrivacyPolicy() {
 }
 
 function showTerms() {
-    // Implementar modal de termos similares
     showNotification('Termos de uso carregados', 'info');
     event.preventDefault();
 }
@@ -276,20 +278,18 @@ function copiarEnderecoParaBanco() {
     }
 }
 
-// Criar Conta com validações de segurança
+// Criar Conta - VERSÃO CORRIGIDA E FUNCIONAL
 document.getElementById('form-conta').addEventListener('submit', async function(e) {
     e.preventDefault();
     
-    // Validar consentimento LGPD
     if (!document.getElementById('lgpd-consent').checked) {
         showNotification('É necessário concordar com a política de privacidade', 'error');
         return;
     }
     
     const formData = new FormData(this);
-    
-    // Validação da senha
     const senha = formData.get('senha');
+    
     if (!/^\d{4}$/.test(senha)) {
         showNotification('A senha deve conter exatamente 4 dígitos numéricos', 'error');
         return;
@@ -307,74 +307,105 @@ document.getElementById('form-conta').addEventListener('submit', async function(
         return;
     }
 
-    // Construir objeto da conta
-    const contaData = {
-        tipoConta: formData.get('tipoConta'),
-        saldo: parseFloat(formData.get('saldo')) || 0,
-        senha: senha,
-        cliente: {
-            nome: formData.get('clienteNome'),
-            cpf: formData.get('clienteCpf'),
-            telefone: formData.get('clienteTelefone'),
-            codigoBanco: formData.get('clienteCodigoBanco'),
-            endereco: {
-                cep: formData.get('cep'),
-                logradouro: formData.get('logradouro'),
-                complemento: formData.get('complemento'),
-                bairro: formData.get('bairro'),
-                localidade: formData.get('localidade'),
-                uf: formData.get('uf')
-            }
-        },
-        banco: {
-            nome: formData.get('bancoNome'),
-            cnpj: formData.get('bancoCnpj'),
-            telefone: formData.get('bancoTelefone'),
-            codigoBanco: formData.get('clienteCodigoBanco'),
-            endereco: {
-                cep: formData.get('bancoCep'),
-                logradouro: formData.get('bancoLogradouro'),
-                complemento: formData.get('bancoComplemento'),
-                bairro: formData.get('bancoBairro'),
-                localidade: formData.get('bancoLocalidade'),
-                uf: formData.get('bancoUf')
-            }
+    // Preparar dados do cliente
+    const clienteData = {
+        nome: formData.get('clienteNome'),
+        cpf: formData.get('clienteCpf'),
+        telefone: formData.get('clienteTelefone'),
+        codigoBanco: formData.get('clienteCodigoBanco'),
+        endereco: {
+            cep: formData.get('cep'),
+            logradouro: formData.get('logradouro'),
+            complemento: formData.get('complemento'),
+            bairro: formData.get('bairro'),
+            localidade: formData.get('localidade'),
+            uf: formData.get('uf')
         }
     };
-    
+
+    // Preparar dados do banco
+    const bancoData = {
+        nome: formData.get('bancoNome'),
+        cnpj: formData.get('bancoCnpj'),
+        telefone: formData.get('bancoTelefone'),
+        codigoBanco: formData.get('clienteCodigoBanco'),
+        endereco: {
+            cep: formData.get('bancoCep'),
+            logradouro: formData.get('bancoLogradouro'),
+            complemento: formData.get('bancoComplemento'),
+            bairro: formData.get('bancoBairro'),
+            localidade: formData.get('bancoLocalidade'),
+            uf: formData.get('bancoUf')
+        }
+    };
+
     try {
         const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<span class="loading-spinner"></span> Criando conta...';
         submitBtn.disabled = true;
         
-        showNotification('Gerando sua conta bancária com segurança...', 'info');
-        
-        const response = await fetch(`${API_BASE_URL}/contas`, {
+        showNotification('Criando cliente e banco...', 'info');
+
+        // 1. Criar Cliente
+        const clienteResponse = await fetch(`${API_BASE_URL}/clientes`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(contaData)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(clienteData)
         });
-        
-        if (!response.ok) {
-            const errorText = await response.text();
+
+        if (!clienteResponse.ok) {
+            const error = await clienteResponse.text();
+            throw new Error(error || 'Erro ao criar cliente');
+        }
+        const clienteResult = await clienteResponse.json();
+        const cliente = clienteResult.data;
+
+        // 2. Criar Banco
+        const bancoResponse = await fetch(`${API_BASE_URL}/bancos`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bancoData)
+        });
+
+        if (!bancoResponse.ok) {
+            const error = await bancoResponse.text();
+            throw new Error(error || 'Erro ao criar banco');
+        }
+        const bancoResult = await bancoResponse.json();
+        const banco = bancoResult.data;
+
+        // 3. Criar Conta com os IDs
+        const contaRequest = {
+            tipoConta: formData.get('tipoConta'),
+            saldo: parseFloat(formData.get('saldo')) || 0,
+            clienteId: cliente.id,
+            bancoId: banco.id,
+            senha: senha
+        };
+
+        showNotification('Criando conta bancária...', 'info');
+
+        const contaResponse = await fetch(`${API_BASE_URL}/contas`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(contaRequest)
+        });
+
+        if (!contaResponse.ok) {
+            const errorText = await contaResponse.text();
             throw new Error(errorText || 'Erro ao criar conta');
         }
         
-        const contaCriada = await response.json();
+        const contaResult = await contaResponse.json();
+        const contaCriada = contaResult.data;
         
-        showNotification(
-            `🎉 Conta criada com sucesso! Número: ${contaCriada.numeroConta}`, 
-            'success'
-        );
+        showNotification(`🎉 Conta criada com sucesso! Número: ${contaCriada.numeroConta}`, 'success');
         
         setTimeout(() => {
             alert(`✅ CONTA BANCÁRIA CRIADA!\n\n` +
                   `📋 Número da Conta: ${contaCriada.numeroConta}\n` +
-                  `🏦 Agência: ${contaCriada.cliente.agencia}\n` +
-                  `👤 Titular: ${contaCriada.cliente.nome}\n` +
+                  `🏦 Agência: ${contaCriada.agencia}\n` +
+                  `👤 Titular: ${cliente.nome}\n` +
                   `💰 Saldo Inicial: R$ ${contaCriada.saldo.toFixed(2)}\n` +
                   `📊 Tipo: ${contaCriada.tipoConta}\n` +
                   `🔒 Dados protegidos conforme LGPD\n\n` +
@@ -393,12 +424,12 @@ document.getElementById('form-conta').addEventListener('submit', async function(
     }
 });
 
-// Buscar Conta com dados mascarados
+// Buscar Conta
 async function buscarConta() {
     const numeroConta = document.getElementById('numeroBusca').value.trim();
     
-    if (!numeroConta) {
-        showNotification('Digite um número de conta', 'error');
+    if (!numeroConta || !/^\d{6}$/.test(numeroConta)) {
+        showNotification('Digite um número de conta válido (6 dígitos)', 'error');
         return;
     }
     
@@ -411,7 +442,8 @@ async function buscarConta() {
             throw new Error('Conta não encontrada');
         }
         
-        const conta = await response.json();
+        const resultado = await response.json();
+        const conta = resultado.data;
         
         const resultadoDiv = document.getElementById('resultado-busca');
         resultadoDiv.innerHTML = `
@@ -426,28 +458,13 @@ async function buscarConta() {
                     <strong>Saldo:</strong> R$ ${conta.saldo.toFixed(2)}
                 </div>
                 <div class="info-item">
-                    <strong>Cliente:</strong> ${conta.cliente.nome}
+                    <strong>Agência:</strong> ${conta.agencia}
                 </div>
                 <div class="info-item">
-                    <strong>CPF:</strong> <span class="masked-data">${mascararCPF(conta.cliente.cpf)}</span>
+                    <strong>Cliente:</strong> ${conta.nomeCliente}
                 </div>
                 <div class="info-item">
-                    <strong>Telefone:</strong> <span class="masked-data">${mascararTelefone(conta.cliente.telefone)}</span>
-                </div>
-                <div class="info-item">
-                    <strong>Banco:</strong> ${conta.banco.nome}
-                </div>
-                <div class="info-item">
-                    <strong>CNPJ Banco:</strong> <span class="masked-data">${mascararCNPJ(conta.banco.cnpj)}</span>
-                </div>
-                <div class="info-item">
-                    <strong>Agência:</strong> ${conta.cliente.agencia}
-                </div>
-                <div class="info-item">
-                    <strong>Endereço Cliente:</strong> ${conta.cliente.endereco.logradouro}, ${conta.cliente.endereco.bairro} - ${conta.cliente.endereco.localidade}/${conta.cliente.endereco.uf}
-                </div>
-                <div class="info-item">
-                    <strong>Endereço Banco:</strong> ${conta.banco.endereco.logradouro}, ${conta.banco.endereco.bairro} - ${conta.banco.endereco.localidade}/${conta.banco.endereco.uf}
+                    <strong>Banco:</strong> ${conta.nomeBanco}
                 </div>
             </div>
         `;
@@ -464,7 +481,7 @@ async function buscarConta() {
     }
 }
 
-// Listar Contas com dados mascarados
+// Listar Contas
 async function listarContas() {
     try {
         showNotification('Carregando contas...', 'info');
@@ -475,7 +492,8 @@ async function listarContas() {
             throw new Error('Erro ao carregar contas');
         }
         
-        const contas = await response.json();
+        const resultado = await response.json();
+        const contas = resultado.data;
         
         const listaDiv = document.getElementById('lista-contas');
         
@@ -493,8 +511,6 @@ async function listarContas() {
                         <th>Tipo</th>
                         <th>Saldo</th>
                         <th>Cliente</th>
-                        <th>CPF</th>
-                        <th>Telefone</th>
                         <th>Banco</th>
                         <th>Agência</th>
                     </tr>
@@ -507,11 +523,9 @@ async function listarContas() {
                             <td style="color: ${conta.saldo >= 0 ? '#27ae60' : '#e74c3c'}; font-weight: bold;">
                                 R$ ${conta.saldo.toFixed(2)}
                             </td>
-                            <td>${conta.cliente.nome}</td>
-                            <td><span class="masked-data">${mascararCPF(conta.cliente.cpf)}</span></td>
-                            <td><span class="masked-data">${mascararTelefone(conta.cliente.telefone)}</span></td>
-                            <td>${conta.banco.nome}</td>
-                            <td>${conta.cliente.agencia}</td>
+                            <td>${conta.nomeCliente}</td>
+                            <td>${conta.nomeBanco}</td>
+                            <td>${conta.agencia}</td>
                         </tr>
                     `).join('')}
                 </tbody>
@@ -519,8 +533,7 @@ async function listarContas() {
             
             <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; text-align: center;">
                 <strong>Total de contas:</strong> ${contas.length} | 
-                <strong>Saldo total:</strong> R$ ${contas.reduce((total, conta) => total + conta.saldo, 0).toFixed(2)} |
-                <strong>🔒 Dados sensíveis protegidos</strong>
+                <strong>Saldo total:</strong> R$ ${contas.reduce((total, conta) => total + conta.saldo, 0).toFixed(2)}
             </div>
         `;
         
@@ -534,6 +547,160 @@ async function listarContas() {
         `;
         showNotification('Erro ao carregar contas: ' + error.message, 'error');
         console.error('Erro:', error);
+    }
+}
+
+// Listar Clientes
+async function listarClientes() {
+    try {
+        showNotification('Carregando clientes...', 'info');
+        
+        const response = await fetch(`${API_BASE_URL}/clientes`);
+        
+        if (!response.ok) {
+            throw new Error('Erro ao carregar clientes');
+        }
+        
+        const resultado = await response.json();
+        const clientes = resultado.data;
+        
+        const listaDiv = document.getElementById('lista-clientes');
+        
+        if (clientes.length === 0) {
+            listaDiv.innerHTML = '<div class="loading">Nenhum cliente cadastrado</div>';
+            showNotification('Nenhum cliente encontrado', 'info');
+            return;
+        }
+        
+        listaDiv.innerHTML = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Telefone</th>
+                        <th>Agência</th>
+                        <th>Código Banco</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${clientes.map(cliente => `
+                        <tr>
+                            <td>${cliente.id}</td>
+                            <td>${cliente.nome}</td>
+                            <td><span class="masked-data">${mascararCPF(cliente.cpf)}</span></td>
+                            <td><span class="masked-data">${mascararTelefone(cliente.telefone)}</span></td>
+                            <td>${cliente.agencia || 'N/A'}</td>
+                            <td>${cliente.codigoBanco}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; text-align: center;">
+                <strong>Total de clientes:</strong> ${clientes.length}
+            </div>
+        `;
+        
+        showNotification(`${clientes.length} clientes carregados!`, 'success');
+        
+    } catch (error) {
+        document.getElementById('lista-clientes').innerHTML = `
+            <div style="text-align: center; color: #e74c3c; padding: 20px;">
+                ❌ Erro ao carregar clientes: ${error.message}
+            </div>
+        `;
+        showNotification('Erro ao carregar clientes: ' + error.message, 'error');
+    }
+}
+
+// Listar Bancos
+async function listarBancos() {
+    try {
+        showNotification('Carregando bancos...', 'info');
+        
+        const response = await fetch(`${API_BASE_URL}/bancos`);
+        
+        if (!response.ok) {
+            throw new Error('Erro ao carregar bancos');
+        }
+        
+        const resultado = await response.json();
+        const bancos = resultado.data;
+        
+        const listaDiv = document.getElementById('lista-bancos');
+        
+        if (bancos.length === 0) {
+            listaDiv.innerHTML = '<div class="loading">Nenhum banco cadastrado</div>';
+            showNotification('Nenhum banco encontrado', 'info');
+            return;
+        }
+        
+        listaDiv.innerHTML = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>CNPJ</th>
+                        <th>Telefone</th>
+                        <th>Agência</th>
+                        <th>Código Banco</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${bancos.map(banco => `
+                        <tr>
+                            <td>${banco.id}</td>
+                            <td>${banco.nome}</td>
+                            <td><span class="masked-data">${mascararCNPJ(banco.cnpj)}</span></td>
+                            <td>${banco.telefone}</td>
+                            <td>${banco.agencia || 'N/A'}</td>
+                            <td>${banco.codigoBanco}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; text-align: center;">
+                <strong>Total de bancos:</strong> ${bancos.length}
+            </div>
+        `;
+        
+        showNotification(`${bancos.length} bancos carregados!`, 'success');
+        
+    } catch (error) {
+        document.getElementById('lista-bancos').innerHTML = `
+            <div style="text-align: center; color: #e74c3c; padding: 20px;">
+                ❌ Erro ao carregar bancos: ${error.message}
+            </div>
+        `;
+        showNotification('Erro ao carregar bancos: ' + error.message, 'error');
+    }
+}
+
+// Testar conexão com backend
+async function testarConexao() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/health`);
+        const statusIndicator = document.getElementById('status-indicator');
+        const statusText = document.getElementById('status-text');
+        
+        if (response.ok) {
+            statusIndicator.className = 'status-indicator connected';
+            statusText.textContent = 'Conectado ao backend';
+            statusIndicator.style.color = '#27ae60';
+        } else {
+            throw new Error('Backend não responde');
+        }
+    } catch (error) {
+        const statusIndicator = document.getElementById('status-indicator');
+        const statusText = document.getElementById('status-text');
+        statusIndicator.className = 'status-indicator disconnected';
+        statusText.textContent = 'Backend offline';
+        statusIndicator.style.color = '#e74c3c';
+        console.error('Erro de conexão:', error);
     }
 }
 
@@ -629,6 +796,12 @@ function aplicarMascaras() {
 // Inicializar quando a página carregar
 document.addEventListener('DOMContentLoaded', function() {
     aplicarMascaras();
+    testarConexao();
+    
+    // Restaurar tab ativa
+    const activeTab = localStorage.getItem('activeTab') || 'criar-conta';
+    document.querySelector(`[onclick="openTab('${activeTab}')"]`).click();
+    
     showNotification('Sistema bancário seguro carregado! 🔒', 'success');
     
     // Fechar modal ao clicar fora
@@ -638,4 +811,7 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.style.display = 'none';
         }
     }
+    
+    // Atualizar status a cada 30 segundos
+    setInterval(testarConexao, 30000);
 });
