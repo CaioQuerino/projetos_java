@@ -1,11 +1,14 @@
 package br.com.conta_bancaria.conta_bancaria.controllers;
 
+import br.com.conta_bancaria.conta_bancaria.dto.responses.ApiResponse;
+import br.com.conta_bancaria.conta_bancaria.dto.responses.cliente.ClienteResponse;
 import br.com.conta_bancaria.conta_bancaria.models.Cliente;
 import br.com.conta_bancaria.conta_bancaria.services.ClienteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/clientes")
@@ -18,8 +21,33 @@ public class ClienteController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> listarTodos() {
-        return ResponseEntity.ok(service.listarTodos());
+    public ResponseEntity<ApiResponse<List<ClienteResponse>>> listarTodos() {
+        try {
+            List<Cliente> cliente = service.listarTodos();
+            List<ClienteResponse> responses = cliente.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+            
+            return ResponseEntity.ok(ApiResponse.success("Clientes listados com sucesso", responses));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                .body(ApiResponse.error("Erro ao listar contas: " + e.getMessage()));
+        }
+    }
+
+    /**
+     * Método auxiliar para converter Entidade para Response DTO
+     */
+    private ClienteResponse convertToResponse(Cliente cliente) {
+        return new ClienteResponse(
+            cliente.getId(),
+            cliente.getNome(),
+            cliente.getEndereco(),
+            cliente.getTelefone(),
+            cliente.getCpf(),
+            cliente.getAgencia(),
+            cliente.getCodigoBanco()
+        );
     }
 
     @GetMapping("/{id}")
