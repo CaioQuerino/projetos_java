@@ -3,6 +3,7 @@ package br.com.conta_bancaria.conta_bancaria.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import br.com.conta_bancaria.conta_bancaria.builders.ContaBuilder;
 import br.com.conta_bancaria.conta_bancaria.dto.requests.conta.CreateContaRequest;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.ApiResponse;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.conta.ContaResponse;
@@ -25,15 +26,16 @@ public class ContaController {
     @PostMapping
     public ResponseEntity<ApiResponse<ContaResponse>> criarConta(@RequestBody CreateContaRequest request) {
         try {
-            Conta contaSalva = contaService.criarConta(
-                request.getTipoConta(),
-                request.getSaldo(),
-                request.getClienteId(),
-                request.getBancoId(),
-                request.getSenha()
-            );
+            Conta conta = new ContaBuilder()
+                .numeroConta(request.getNumeroConta())
+                .tipoConta(request.getTipoConta())
+                .saldo(request.getSaldo())
+                .cliente(request.getCliente())
+                .banco(request.getBanco())
+                .senha(request.getSenha())
+                .build();
 
-            ContaResponse response = convertToResponse(contaSalva);
+            ContaResponse response = convertToResponse(conta);
             return ResponseEntity.ok(ApiResponse.success("Conta criada com sucesso", response));
 
         } catch (Exception e) {
