@@ -1,5 +1,6 @@
 package br.com.conta_bancaria.conta_bancaria.controllers;
 
+import br.com.conta_bancaria.conta_bancaria.dto.requests.cliente.CreateClienteRequest;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.ApiResponse;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.cliente.ClienteResponse;
 import br.com.conta_bancaria.conta_bancaria.models.Cliente;
@@ -58,9 +59,36 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> salvar(@RequestBody Cliente cliente) {
-        Cliente novo = service.salvar(cliente);
-        return ResponseEntity.ok(novo);
+    public ResponseEntity<ApiResponse<ClienteResponse>> criarBanco(@RequestBody CreateClienteRequest request) 
+    {
+        try {
+            Cliente cliente = new Cliente(
+                request.getNome(),
+                request.getEndereco(),
+                request.getTelefone(),
+                request.getCpf(),
+                request.getAgencia(),
+                request.getCodigoBanco()
+            );
+
+            Cliente clienteSalvo = service.salvar(cliente);
+
+            ClienteResponse response = new ClienteResponse(
+                clienteSalvo.getId(),
+                clienteSalvo.getNome(),
+                clienteSalvo.getEndereco(),
+                clienteSalvo.getTelefone(),
+                clienteSalvo.getCpf(),
+                clienteSalvo.getAgencia(),
+                clienteSalvo.getCodigoBanco()
+            );
+
+            return ResponseEntity.ok(ApiResponse.success("Cliente criado com sucesso", response));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                .body(ApiResponse.error("Erro ao criar cliente: " + e.getMessage()));
+        }
     }
 
     @PutMapping("/{id}")
