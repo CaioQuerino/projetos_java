@@ -1,24 +1,30 @@
 package br.com.conta_bancaria.conta_bancaria.dto.requests.conta;
 
+import br.com.conta_bancaria.conta_bancaria.models.Banco;
+import br.com.conta_bancaria.conta_bancaria.models.Cliente;
 
 public class CreateContaRequest {
+    private String numeroConta;
     private String tipoConta;
     private double saldo;
-    private Long clienteId;
-    private Long bancoId;
+    private Cliente cliente;
+    private Banco banco;
     private String senha;
     
     public CreateContaRequest() {}
 
-    public CreateContaRequest(String tipoConta, double saldo, Long clienteId, 
-                                                Long bancoId, String senha) 
-    {
+    public CreateContaRequest(String numeroConta, String tipoConta, 
+                              double saldo, Cliente cliente, Banco banco, String senha) {
+        this.numeroConta = numeroConta;
         this.tipoConta = tipoConta;
         this.saldo = saldo;
-        this.clienteId = clienteId;
-        this.bancoId = bancoId;
+        this.cliente = cliente;
+        this.banco = banco;
         this.senha = senha;
     }
+
+    public String getNumeroConta() { return numeroConta; }
+    public void setNumeroConta(String numeroConta) { this.numeroConta = numeroConta; }
 
     public String getTipoConta() { return tipoConta; }
 
@@ -28,13 +34,11 @@ public class CreateContaRequest {
 
     public void setSaldo(double saldo) { this.saldo = saldo; }
 
-    public Long getClienteId() { return clienteId; }
+    public Cliente getCliente() { return cliente; }
+    public void setCliente(Cliente cliente) { this.cliente = cliente; }
 
-    public void setClienteId(Long clienteId) { this.clienteId = clienteId; }
-
-    public Long getBancoId() { return bancoId; }
-
-    public void setBancoId(Long bancoId) { this.bancoId = bancoId; }
+    public Banco getBanco() { return banco; }
+    public void setBanco(Banco banco) { this.banco = banco; }
 
     public String getSenha() { return senha; }
 
