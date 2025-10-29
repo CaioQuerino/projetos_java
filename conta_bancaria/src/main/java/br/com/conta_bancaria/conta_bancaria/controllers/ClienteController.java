@@ -1,5 +1,6 @@
 package br.com.conta_bancaria.conta_bancaria.controllers;
 
+import br.com.conta_bancaria.conta_bancaria.builders.ClienteBuilder;
 import br.com.conta_bancaria.conta_bancaria.dto.requests.cliente.CreateClienteRequest;
 import br.com.conta_bancaria.conta_bancaria.dto.requests.cliente.UpdateClienteRequest;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.ApiResponse;
@@ -55,15 +56,15 @@ public class ClienteController {
     @PostMapping
     public ResponseEntity<ApiResponse<ClienteResponse>> salvar(@RequestBody CreateClienteRequest request) {
         try {
-            Cliente cliente = new Cliente(
-                request.getNome(),
-                request.getEndereco(),
-                request.getTelefone(),
-                request.getCpf(),
-                request.getAgencia(),
-                request.getCodigoBanco()
-            );
-            
+            Cliente cliente = new ClienteBuilder()
+                .nome(request.getNome())
+                .agencia(request.getAgencia())
+                .codigoBanco(request.getCodigoBanco())
+                .cpf(request.getCpf())
+                .endereco(request.getEndereco())
+                .telefone(request.getTelefone())
+                .build(); 
+
             Cliente novo = service.salvar(cliente);
             ClienteResponse response = convertToResponse(novo);
             return ResponseEntity.ok(ApiResponse.success("Cliente criado com sucesso", response));
@@ -76,14 +77,14 @@ public class ClienteController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<ClienteResponse>> atualizar(@PathVariable Long id, @RequestBody UpdateClienteRequest request) {
         try {
-            Cliente clienteAtualizado = new Cliente(
-                request.getNome(),
-                request.getEndereco(),
-                request.getTelefone(),
-                request.getCpf(),
-                request.getCodigoBanco(),
-                request.getCodigoBanco()
-            );
+            Cliente clienteAtualizado = new ClienteBuilder()
+                .nome(request.getNome())
+                .agencia(request.getAgencia())
+                .codigoBanco(request.getCodigoBanco())
+                .cpf(request.getCpf())
+                .endereco(request.getEndereco())
+                .telefone(request.getTelefone())
+                .build();       
             
             Cliente atualizado = service.atualizar(id, clienteAtualizado);
             ClienteResponse response = convertToResponse(atualizado);
