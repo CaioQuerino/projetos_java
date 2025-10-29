@@ -22,25 +22,13 @@ public class ContaResponse {
 
     public String getAgencia() { return agencia; }
 
-    public void setAgencia(String agencia) { this.agencia = agencia; }
-
     public String getNumeroConta() { return numeroConta; }
-
-    public void setNumeroConta(String numeroConta) { this.numeroConta = numeroConta; }
 
     public String getTipoConta() { return tipoConta; }
 
-    public void setTipoConta(String tipoConta) { this.tipoConta = tipoConta; }
-
     public double getSaldo() { return saldo; }
-
-    public void setSaldo(double saldo) { this.saldo = saldo; }
 
     public String getNomeCliente() { return nomeCliente; }
 
-    public void setNomeCliente(String nomeCliente) { this.nomeCliente = nomeCliente; }
-
     public String getNomeBanco() { return nomeBanco; }
-
-    public void setNomeBanco(String nomeBanco) { this.nomeBanco = nomeBanco; }    
 }
