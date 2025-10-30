@@ -59,6 +59,6 @@ public class Banco {
     public void setAgencia(String agencia) { this.agencia = agencia; }
 	
     public String getCodigoBanco() { return codigoBanco; }
-	
-    public void setCodigoBanco(String codigoBancon) { this.codigoBanco = codigoBancon; }
+    
+    public void setCodigoBanco(String codigoBanco) { this.codigoBanco = codigoBanco; }
 }
