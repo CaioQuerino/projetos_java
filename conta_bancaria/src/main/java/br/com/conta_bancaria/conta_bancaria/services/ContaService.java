@@ -20,20 +20,14 @@ public class ContaService {
     private final RepositoryConta repositoryConta;
     private final RepositoryBanco repositoryBanco;
     private final RepositoryCliente repositoryCliente;
-    private final ClienteService clienteService;
     private final Random random = new Random();
-    private final BancoService bancoService;
 
     public ContaService(RepositoryConta repositoryConta, 
                        RepositoryBanco repositoryBanco,
-                       RepositoryCliente repositoryCliente,
-                       BancoService bancoService,
-                       ClienteService clienteService) {
+                       RepositoryCliente repositoryCliente) {
         this.repositoryConta = repositoryConta;
         this.repositoryBanco = repositoryBanco;
         this.repositoryCliente = repositoryCliente;
-        this.bancoService = bancoService;
-        this.clienteService = clienteService;
       }
 
     /**
@@ -69,11 +63,11 @@ public class ContaService {
                            Long clienteId, Long bancoId, String senha) {
         
         // Buscar cliente existente
-        Cliente cliente = clienteService.buscarPorId(clienteId)
+        Cliente cliente = repositoryCliente.findById(clienteId)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado com id: " + clienteId));
-        
+            
         // Buscar banco existente
-        Banco banco = bancoService.buscarPorId(bancoId)
+        Banco banco = repositoryBanco.findById(bancoId)
                 .orElseThrow(() -> new RuntimeException("Banco não encontrado com id: " + bancoId));
 
         String numeroConta = gerarNumeroConta();
@@ -84,12 +78,12 @@ public class ContaService {
         banco.setAgencia(agencia);
 
         // Salvar atualizações
-        Cliente clienteAtualizado = repositoryCliente.save(cliente);
-        Banco bancoAtualizado = repositoryBanco.save(banco);
+        repositoryCliente.save(cliente);
+        repositoryBanco.save(banco);
 
         // Criar e salvar conta
         Conta conta = new Conta(numeroConta, tipoConta, saldoInicial, 
-                               clienteAtualizado, bancoAtualizado, senha);
+                               cliente, banco, senha);
         
         return repositoryConta.save(conta);
     }
