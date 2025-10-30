@@ -3,7 +3,6 @@ package br.com.conta_bancaria.conta_bancaria.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import br.com.conta_bancaria.conta_bancaria.builders.ContaBuilder;
 import br.com.conta_bancaria.conta_bancaria.dto.requests.conta.CreateContaRequest;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.ApiResponse;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.conta.ContaResponse;
@@ -26,14 +25,13 @@ public class ContaController {
     @PostMapping
     public ResponseEntity<ApiResponse<ContaResponse>> criarConta(@RequestBody CreateContaRequest request) {
         try {
-            Conta conta = new ContaBuilder()
-                .numeroConta(request.getNumeroConta())
-                .tipoConta(request.getTipoConta())
-                .saldo(request.getSaldo())
-                .cliente(request.getCliente())
-                .banco(request.getBanco())
-                .senha(request.getSenha())
-                .build();
+            Conta conta = contaService.criarConta(
+                request.getTipoConta(),
+                request.getSaldo(),
+                request.getClienteId(),
+                request.getBancoId(),
+                request.getSenha()
+            );
 
             ContaResponse response = convertToResponse(conta);
             return ResponseEntity.ok(ApiResponse.success("Conta criada com sucesso", response));
@@ -45,8 +43,15 @@ public class ContaController {
     }
 
     @GetMapping("/{numeroConta}")
-    public Conta buscarConta(@PathVariable String numeroConta) {
-        return contaService.buscarPorNumero(numeroConta);
+    public ResponseEntity<ApiResponse<ContaResponse>> buscarConta(@PathVariable String numeroConta) {
+        try {
+            Conta conta = contaService.buscarPorNumero(numeroConta);
+            ContaResponse response = convertToResponse(conta);
+            return ResponseEntity.ok(ApiResponse.success("Conta encontrada", response));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                .body(ApiResponse.error("Conta não encontrada: " + e.getMessage()));
+        }
     }
 
     @GetMapping
