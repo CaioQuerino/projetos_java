@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.RestClientException;
 
+import br.com.conta_bancaria.conta_bancaria.builders.ViaCepBuilder;
 import br.com.conta_bancaria.conta_bancaria.interfaces.ViaCepDto;
 import br.com.conta_bancaria.conta_bancaria.models.ViaCep;
 
@@ -22,23 +23,28 @@ public class ViaCepService {
 
     public Optional<ViaCepDto> buscarEndereco(String cep) {
         if (cep == null || !cep.matches("\\d{8}")) {
-            System.err.println("CEP inválido: " + cep);
             return Optional.empty();
         }
 
         try {
-            ViaCep endereco = restTemplate.getForObject(VIA_CEP_URL, ViaCep.class, cep);
+            ViaCep response = restTemplate.getForObject(VIA_CEP_URL, ViaCep.class, cep);
 
-            if (endereco == null || endereco.getCep() == null) {
-                System.out.println("CEP não encontrado: " + cep);
+            if (response == null || response.getCep() == null) {
                 return Optional.empty();
             }
 
-            System.out.println("Endereço encontrado: " + endereco);
+            ViaCepDto endereco = new ViaCepBuilder()
+                .cep(response.getCep())
+                .logradouro(response.getLogradouro())
+                .complemento(response.getComplemento())
+                .bairro(response.getBairro())
+                .localidade(response.getLocalidade())
+                .uf(response.getUf())
+                .build();
+
             return Optional.of(endereco);
 
         } catch (RestClientException e) {
-            System.err.println("Erro ao buscar CEP " + cep + ": " + e.getMessage());
             return Optional.empty();
         }
     }
