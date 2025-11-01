@@ -5,8 +5,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.RestClientException;
 
 import br.com.conta_bancaria.conta_bancaria.builders.ViaCepBuilder;
-import br.com.conta_bancaria.conta_bancaria.interfaces.ViaCepDto;
 import br.com.conta_bancaria.conta_bancaria.models.ViaCep;
+import br.com.conta_bancaria.conta_bancaria.dto.responses.viacep.ViaCepResponse;
+import br.com.conta_bancaria.conta_bancaria.interfaces.ViaCepDto;
 
 import java.util.Optional;
 
@@ -27,13 +28,13 @@ public class ViaCepService {
         }
 
         try {
-            ViaCep response = restTemplate.getForObject(VIA_CEP_URL, ViaCep.class, cep);
+            ViaCepResponse response = restTemplate.getForObject(VIA_CEP_URL, ViaCepResponse.class, cep);
 
             if (response == null || response.getCep() == null) {
                 return Optional.empty();
             }
 
-            ViaCepDto endereco = new ViaCepBuilder()
+            ViaCep endereco = new ViaCepBuilder()
                 .cep(response.getCep())
                 .logradouro(response.getLogradouro())
                 .complemento(response.getComplemento())
