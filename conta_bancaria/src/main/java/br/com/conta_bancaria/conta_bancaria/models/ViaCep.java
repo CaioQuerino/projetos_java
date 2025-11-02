@@ -1,15 +1,21 @@
 package br.com.conta_bancaria.conta_bancaria.models;
 
 import br.com.conta_bancaria.conta_bancaria.interfaces.ViaCepDto;
-import jakarta.persistence.Embeddable;
-
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+@Entity
+@Table(name = "enderecos")
 @Getter
 @Setter
-@Embeddable
 public class ViaCep implements ViaCepDto {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false, length = 9)
     private String cep;
     private String logradouro;
     private String complemento;
@@ -18,14 +24,4 @@ public class ViaCep implements ViaCepDto {
     private String uf;
 
     public ViaCep() {}
-
-    public ViaCep(String cep, String logradouro, String complemento, 
-                  String bairro, String localidade, String uf) {
-        this.cep = cep;
-        this.logradouro = logradouro;
-        this.complemento = complemento;
-        this.bairro = bairro;
-        this.localidade = localidade;
-        this.uf = uf;
-    }
 }
