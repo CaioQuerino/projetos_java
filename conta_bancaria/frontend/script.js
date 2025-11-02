@@ -316,11 +316,6 @@ document.getElementById('form-conta').addEventListener('submit', async function(
         agencia: null, // Será preenchida automaticamente pelo backend
         endereco: {
             cep: formData.get('cep'),
-            logradouro: formData.get('logradouro'),
-            complemento: formData.get('complemento'),
-            bairro: formData.get('bairro'),
-            localidade: formData.get('localidade'),
-            uf: formData.get('uf')
         }
     };
 
@@ -333,11 +328,6 @@ document.getElementById('form-conta').addEventListener('submit', async function(
         agencia: null, // Será preenchida automaticamente pelo backend
         endereco: {
             cep: formData.get('bancoCep'),
-            logradouro: formData.get('bancoLogradouro'),
-            complemento: formData.get('bancoComplemento'),
-            bairro: formData.get('bancoBairro'),
-            localidade: formData.get('bancoLocalidade'),
-            uf: formData.get('bancoUf')
         }
     };
 
