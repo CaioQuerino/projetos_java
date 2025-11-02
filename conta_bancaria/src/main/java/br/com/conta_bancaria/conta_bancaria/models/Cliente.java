@@ -9,6 +9,7 @@ import lombok.*;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class Cliente {
     
     @Id
@@ -27,15 +28,4 @@ public class Cliente {
     private String codigoBanco;
 
     public Cliente() {}
-
-    public Cliente(String nome, ViaCep endereco, String telefone, String cpf, 
-                                        String agencia, String codigoBanco) {
-
-        this.nome = nome;
-        this.endereco = endereco;
-        this.telefone = telefone;
-        this.cpf = cpf;
-        this.agencia = agencia;
-        this.codigoBanco = codigoBanco;
-    }
 }
