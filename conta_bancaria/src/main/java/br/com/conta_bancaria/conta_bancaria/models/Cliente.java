@@ -18,7 +18,8 @@ public class Cliente {
     
     private String nome;
     
-    @Embedded
+    @ManyToOne
+    @JoinColumn(name = "endereco_id")
     private ViaCep endereco;
     
     private String telefone;
