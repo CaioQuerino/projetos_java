@@ -2,8 +2,7 @@ package br.com.conta_bancaria.conta_bancaria.models;
 
 import jakarta.persistence.*;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "banco")
