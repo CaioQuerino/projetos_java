@@ -1,6 +1,7 @@
 package br.com.conta_bancaria.conta_bancaria.services;
 
 import br.com.conta_bancaria.conta_bancaria.models.Cliente;
+import br.com.conta_bancaria.conta_bancaria.models.ViaCep;
 import br.com.conta_bancaria.conta_bancaria.repository.RepositoryCliente;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +12,11 @@ import java.util.Optional;
 public class ClienteService {
 
     private final RepositoryCliente repository;
+    private final ViaCepService viaCepService;
 
-    public ClienteService(RepositoryCliente repository) {
+    public ClienteService(RepositoryCliente repository, ViaCepService viaCepService) {
         this.repository = repository;
+        this.viaCepService = viaCepService;
     }
 
     public List<Cliente> listarTodos() {
@@ -25,6 +28,10 @@ public class ClienteService {
     }
 
     public Cliente salvar(Cliente cliente) {
+        if (cliente.getEndereco() != null && cliente.getEndereco().getCep() != null) {
+            ViaCep endereco = viaCepService.buscarOuSalvarEndereco(cliente.getEndereco().getCep());
+            cliente.setEndereco(endereco);
+        }      
         return repository.save(cliente);
     }
 
