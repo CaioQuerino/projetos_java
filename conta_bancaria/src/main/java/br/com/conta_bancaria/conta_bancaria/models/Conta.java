@@ -10,6 +10,7 @@ import lombok.*;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class Conta {
     
     @Id
@@ -31,14 +32,4 @@ public class Conta {
     private String senha;
 
     public Conta() {}
-
-    public Conta(String numeroConta, String tipoConta, double saldo,
-                 Cliente cliente, Banco banco, String senha) {
-        this.numeroConta = numeroConta;
-        this.tipoConta = tipoConta;
-        this.saldo = saldo;
-        this.cliente = cliente;
-        this.banco = banco;
-        this.senha = senha;
-    }
 }
