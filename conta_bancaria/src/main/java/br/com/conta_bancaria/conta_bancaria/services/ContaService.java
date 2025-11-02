@@ -9,6 +9,7 @@ import br.com.conta_bancaria.conta_bancaria.models.Cliente;
 import br.com.conta_bancaria.conta_bancaria.repository.RepositoryConta;
 import br.com.conta_bancaria.conta_bancaria.repository.RepositoryBanco;
 import br.com.conta_bancaria.conta_bancaria.repository.RepositoryCliente;
+import br.com.conta_bancaria.conta_bancaria.builders.ContaBuilder;
 
 import java.util.List;
 import java.util.Optional;
@@ -82,8 +83,14 @@ public class ContaService {
         repositoryBanco.save(banco);
 
         // Criar e salvar conta
-        Conta conta = new Conta(numeroConta, tipoConta, saldoInicial, 
-                               cliente, banco, senha);
+        Conta conta = new ContaBuilder()
+            .banco(banco)
+            .cliente(cliente)
+            .numeroConta(numeroConta)
+            .saldo(saldoInicial)
+            .senha(senha)
+            .tipoConta(tipoConta)
+            .build();
         
         return repositoryConta.save(conta);
     }
