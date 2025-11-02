@@ -7,16 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.conta_bancaria.conta_bancaria.models.Banco;
+import br.com.conta_bancaria.conta_bancaria.models.ViaCep;
 import br.com.conta_bancaria.conta_bancaria.repository.RepositoryBanco;
 
 @Service
 public class BancoService {
 
     private final RepositoryBanco repository;
+    private final ViaCepService viaCepService;
+
 
     @Autowired
-    public BancoService(RepositoryBanco repository) {
-        this.repository = repository;
+    public BancoService(RepositoryBanco repository, ViaCepService viaCepService) {
+        this.repository = repository;        
+        this.viaCepService = viaCepService;
     }
 
     public List<Banco> listarTodos() {
@@ -36,6 +40,10 @@ public class BancoService {
     }
 
     public Banco salvar(Banco banco) {
+        if (banco.getEndereco() != null && banco.getEndereco().getCep() != null) {
+            ViaCep endereco = viaCepService.buscarOuSalvarEndereco(banco.getEndereco().getCep());
+            banco.setEndereco(endereco);
+        }  
         return repository.save(banco);
     }
 
