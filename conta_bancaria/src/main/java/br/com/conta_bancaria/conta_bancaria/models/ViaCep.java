@@ -9,6 +9,7 @@ import lombok.*;
 @Table(name = "enderecos")
 @Getter
 @Setter
+@AllArgsConstructor
 public class ViaCep implements ViaCepDto {
 
     @Id
