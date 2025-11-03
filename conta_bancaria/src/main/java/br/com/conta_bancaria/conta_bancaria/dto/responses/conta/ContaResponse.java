@@ -1,7 +1,6 @@
 package br.com.conta_bancaria.conta_bancaria.dto.responses.conta;
 
-import lombok.Getter;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
