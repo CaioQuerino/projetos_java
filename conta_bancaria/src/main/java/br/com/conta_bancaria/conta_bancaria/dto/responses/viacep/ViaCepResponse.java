@@ -1,12 +1,9 @@
 package br.com.conta_bancaria.conta_bancaria.dto.responses.viacep;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@Setter
-@NoArgsConstructor
+@AllArgsConstructor
 public class ViaCepResponse {
     private String cep;
     private String logradouro;
