@@ -6,8 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.conta_bancaria.conta_bancaria.models.Banco;
-import br.com.conta_bancaria.conta_bancaria.models.ViaCep;
+import br.com.conta_bancaria.conta_bancaria.models.*;
 import br.com.conta_bancaria.conta_bancaria.repository.RepositoryBanco;
 
 @Service
