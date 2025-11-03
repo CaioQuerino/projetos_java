@@ -1,7 +1,6 @@
 package br.com.conta_bancaria.conta_bancaria.services;
 
-import br.com.conta_bancaria.conta_bancaria.models.Cliente;
-import br.com.conta_bancaria.conta_bancaria.models.ViaCep;
+import br.com.conta_bancaria.conta_bancaria.models.*;
 import br.com.conta_bancaria.conta_bancaria.repository.RepositoryCliente;
 import org.springframework.stereotype.Service;
 
