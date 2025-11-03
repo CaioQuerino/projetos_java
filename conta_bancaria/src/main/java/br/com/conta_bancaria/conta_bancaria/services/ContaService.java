@@ -3,17 +3,11 @@ package br.com.conta_bancaria.conta_bancaria.services;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.conta_bancaria.conta_bancaria.models.Conta;
-import br.com.conta_bancaria.conta_bancaria.models.Banco;
-import br.com.conta_bancaria.conta_bancaria.models.Cliente;
-import br.com.conta_bancaria.conta_bancaria.repository.RepositoryConta;
-import br.com.conta_bancaria.conta_bancaria.repository.RepositoryBanco;
-import br.com.conta_bancaria.conta_bancaria.repository.RepositoryCliente;
+import br.com.conta_bancaria.conta_bancaria.models.*;
+import br.com.conta_bancaria.conta_bancaria.repository.*;
 import br.com.conta_bancaria.conta_bancaria.builders.ContaBuilder;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class ContaService {
