@@ -2,8 +2,7 @@ package br.com.conta_bancaria.conta_bancaria.dto.responses.banco;
 
 import br.com.conta_bancaria.conta_bancaria.models.ViaCep;
 
-import lombok.Getter;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @Getter
 @AllArgsConstructor
