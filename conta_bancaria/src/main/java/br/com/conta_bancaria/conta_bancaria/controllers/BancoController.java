@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import lombok.AllArgsConstructor;
 
 import br.com.conta_bancaria.conta_bancaria.models.Banco;
 import br.com.conta_bancaria.conta_bancaria.services.BancoService;
@@ -16,13 +17,10 @@ import br.com.conta_bancaria.conta_bancaria.factorys.banco.BancoFactory;
 
 @RestController
 @RequestMapping("/bancos")
+@AllArgsConstructor
 public class BancoController {
 
     private final BancoService bancoService;
-
-    public BancoController(BancoService bancoService) {
-        this.bancoService = bancoService;
-    }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<BancoResponse>>> listarTodos() {
