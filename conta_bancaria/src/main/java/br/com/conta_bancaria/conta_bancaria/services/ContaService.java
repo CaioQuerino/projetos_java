@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.conta_bancaria.conta_bancaria.models.*;
 import br.com.conta_bancaria.conta_bancaria.repository.*;
-import br.com.conta_bancaria.conta_bancaria.builders.ContaBuilder;
 
 import java.util.*;
 
@@ -54,38 +53,18 @@ public class ContaService {
      * @return 
      */
     @Transactional
-    public Conta criarConta(String tipoConta, double saldoInicial,
-                           Long clienteId, Long bancoId, String senha) {
-        
-        // Buscar cliente existente
-        Cliente cliente = repositoryCliente.findById(clienteId)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com id: " + clienteId));
-            
-        // Buscar banco existente
-        Banco banco = repositoryBanco.findById(bancoId)
-                .orElseThrow(() -> new RuntimeException("Banco não encontrado com id: " + bancoId));
-
+    public Conta criarConta(Conta conta) {
+        // gerar número e agência
         String numeroConta = gerarNumeroConta();
         String agencia = gerarNumeroAgencia();
 
-        // Atualizar agência no cliente e banco
-        cliente.setAgencia(agencia);
-        banco.setAgencia(agencia);
+        conta.getCliente().setAgencia(agencia);
+        conta.getBanco().setAgencia(agencia);
 
-        // Salvar atualizações
-        repositoryCliente.save(cliente);
-        repositoryBanco.save(banco);
+        repositoryCliente.save(conta.getCliente());
+        repositoryBanco.save(conta.getBanco());
 
-        // Criar e salvar conta
-        Conta conta = new ContaBuilder()
-            .banco(banco)
-            .cliente(cliente)
-            .numeroConta(numeroConta)
-            .saldo(saldoInicial)
-            .senha(senha)
-            .tipoConta(tipoConta)
-            .build();
-        
+        conta.setNumeroConta(numeroConta);
         return repositoryConta.save(conta);
     }
 
