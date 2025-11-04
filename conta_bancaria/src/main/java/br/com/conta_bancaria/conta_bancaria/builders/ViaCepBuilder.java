@@ -6,7 +6,6 @@ public class ViaCepBuilder {
     
     private String cep;
     private String logradouro;
-    private String complemento;
     private String bairro;
     private String localidade;
     private String uf;
@@ -21,10 +20,6 @@ public class ViaCepBuilder {
         return this;
     }
 
-    public ViaCepBuilder complemento(String complemento) {
-        this.complemento = complemento;
-        return this;
-    }
     
     public ViaCepBuilder bairro(String bairro) {
         this.bairro = bairro;
@@ -45,7 +40,6 @@ public class ViaCepBuilder {
         ViaCep viaCep = new ViaCep();
         viaCep.setCep(this.cep);
         viaCep.setLogradouro(this.logradouro);
-        viaCep.setComplemento(this.complemento);
         viaCep.setBairro(this.bairro);
         viaCep.setLocalidade(this.localidade);
         viaCep.setUf(this.uf);
