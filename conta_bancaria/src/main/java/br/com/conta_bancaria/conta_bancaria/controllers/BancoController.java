@@ -9,11 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import br.com.conta_bancaria.conta_bancaria.models.Banco;
 import br.com.conta_bancaria.conta_bancaria.services.BancoService;
-import br.com.conta_bancaria.conta_bancaria.builders.BancoBuilder;
-import br.com.conta_bancaria.conta_bancaria.dto.requests.banco.CreateBancoRequest;
-import br.com.conta_bancaria.conta_bancaria.dto.requests.banco.UpdateBancoRequest;
+import br.com.conta_bancaria.conta_bancaria.dto.requests.banco.*;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.ApiResponse;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.banco.BancoResponse;
+import br.com.conta_bancaria.conta_bancaria.factorys.banco.BancoFactory;
 
 @RestController
 @RequestMapping("/bancos")
@@ -77,15 +76,7 @@ public class BancoController {
     @PostMapping
     public ResponseEntity<ApiResponse<BancoResponse>> criarBanco(@RequestBody CreateBancoRequest request) {
         try {
-            Banco banco = new BancoBuilder()
-                .nome(request.getNome())
-                .endereco(request.getEndereco())
-                .telefone(request.getTelefone())
-                .cnpj(request.getCnpj())
-                .agencia(request.getAgencia())
-                .codigoBanco(request.getCodigoBanco())
-                .build();
-            
+            Banco banco = BancoFactory.fromRequest(request);
             Banco bancoSalvo = bancoService.salvar(banco);
             BancoResponse response = convertToResponse(bancoSalvo);
             return ResponseEntity.ok(ApiResponse.success("Banco criado com sucesso", response));
@@ -99,15 +90,7 @@ public class BancoController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<BancoResponse>> atualizarBanco(@PathVariable Long id, @RequestBody UpdateBancoRequest request) {
         try {
-            Banco bancoAtualizado = new BancoBuilder()
-                .nome(request.getNome())
-                .endereco(request.getEndereco())
-                .telefone(request.getTelefone())
-                .cnpj(request.getCnpj())
-                .agencia(request.getAgencia())
-                .codigoBanco(request.getCodigoBanco())
-                .build();
-            
+            Banco bancoAtualizado = BancoFactory.fromUpdate(request);
             Banco banco = bancoService.atualizar(id, bancoAtualizado);
             BancoResponse response = convertToResponse(banco);
             return ResponseEntity.ok(ApiResponse.success("Banco atualizado com sucesso", response));
