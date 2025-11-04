@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import br.com.conta_bancaria.conta_bancaria.dto.requests.conta.CreateContaRequest;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.ApiResponse;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.conta.ContaResponse;
-import br.com.conta_bancaria.conta_bancaria.models.Conta;
+import br.com.conta_bancaria.conta_bancaria.factorys.conta.ContaFactory;
+import br.com.conta_bancaria.conta_bancaria.models.*;
+import br.com.conta_bancaria.conta_bancaria.repository.*;
 import br.com.conta_bancaria.conta_bancaria.services.ContaService;
 
 import java.util.List;
@@ -17,23 +19,27 @@ import java.util.stream.Collectors;
 public class ContaController {
 
     private final ContaService contaService;
+    private final RepositoryBanco repositoryBanco;
+    private final RepositoryCliente repositoryCliente;
 
-    public ContaController(ContaService contaService) {
+    public ContaController(ContaService contaService, RepositoryBanco repositoryBanco, RepositoryCliente repositoryCliente) {
         this.contaService = contaService;
+        this.repositoryBanco = repositoryBanco;
+        this.repositoryCliente = repositoryCliente;
     }
 
     @PostMapping
     public ResponseEntity<ApiResponse<ContaResponse>> criarConta(@RequestBody CreateContaRequest request) {
         try {
-            Conta conta = contaService.criarConta(
-                request.getTipoConta(),
-                request.getSaldo(),
-                request.getClienteId(),
-                request.getBancoId(),
-                request.getSenha()
-            );
+            Cliente cliente = repositoryCliente.findById(request.getClienteId())
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com id: " + request.getClienteId()));
 
-            ContaResponse response = convertToResponse(conta);
+            Banco banco = repositoryBanco.findById(request.getBancoId())
+                .orElseThrow(() -> new RuntimeException("Banco não encontrado com id: " + request.getBancoId()));
+
+            Conta conta = ContaFactory.fromCreate(request, cliente, banco);
+            Conta novaConta = contaService.criarConta(conta);
+            ContaResponse response = convertToResponse(novaConta);
             return ResponseEntity.ok(ApiResponse.success("Conta criada com sucesso", response));
 
         } catch (Exception e) {
