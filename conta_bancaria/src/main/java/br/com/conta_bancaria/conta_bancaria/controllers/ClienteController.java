@@ -1,10 +1,9 @@
 package br.com.conta_bancaria.conta_bancaria.controllers;
 
-import br.com.conta_bancaria.conta_bancaria.builders.ClienteBuilder;
-import br.com.conta_bancaria.conta_bancaria.dto.requests.cliente.CreateClienteRequest;
-import br.com.conta_bancaria.conta_bancaria.dto.requests.cliente.UpdateClienteRequest;
+import br.com.conta_bancaria.conta_bancaria.dto.requests.cliente.*;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.ApiResponse;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.cliente.ClienteResponse;
+import br.com.conta_bancaria.conta_bancaria.factorys.cliente.ClienteFactory;
 import br.com.conta_bancaria.conta_bancaria.models.Cliente;
 import br.com.conta_bancaria.conta_bancaria.services.ClienteService;
 import org.springframework.http.ResponseEntity;
@@ -56,15 +55,7 @@ public class ClienteController {
     @PostMapping
     public ResponseEntity<ApiResponse<ClienteResponse>> salvar(@RequestBody CreateClienteRequest request) {
         try {
-            Cliente cliente = new ClienteBuilder()
-                .nome(request.getNome())
-                .agencia(request.getAgencia())
-                .codigoBanco(request.getCodigoBanco())
-                .cpf(request.getCpf())
-                .endereco(request.getEndereco())
-                .telefone(request.getTelefone())
-                .build(); 
-
+            Cliente cliente = ClienteFactory.fromRequest(request);
             Cliente novo = service.salvar(cliente);
             ClienteResponse response = convertToResponse(novo);
             return ResponseEntity.ok(ApiResponse.success("Cliente criado com sucesso", response));
@@ -77,15 +68,7 @@ public class ClienteController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<ClienteResponse>> atualizar(@PathVariable Long id, @RequestBody UpdateClienteRequest request) {
         try {
-            Cliente clienteAtualizado = new ClienteBuilder()
-                .nome(request.getNome())
-                .agencia(request.getAgencia())
-                .codigoBanco(request.getCodigoBanco())
-                .cpf(request.getCpf())
-                .endereco(request.getEndereco())
-                .telefone(request.getTelefone())
-                .build();       
-            
+            Cliente clienteAtualizado = ClienteFactory.fromUpdate(request);
             Cliente atualizado = service.atualizar(id, clienteAtualizado);
             ClienteResponse response = convertToResponse(atualizado);
             return ResponseEntity.ok(ApiResponse.success("Cliente atualizado com sucesso", response));
