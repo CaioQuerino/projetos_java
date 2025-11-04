@@ -43,7 +43,6 @@ public class ViaCepService {
             ViaCep endereco = new ViaCepBuilder()
                     .cep(response.getCep())
                     .logradouro(response.getLogradouro())
-                    .complemento(response.getComplemento())
                     .bairro(response.getBairro())
                     .localidade(response.getLocalidade())
                     .uf(response.getUf())
