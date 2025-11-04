@@ -10,23 +10,19 @@ import br.com.conta_bancaria.conta_bancaria.factorys.conta.ContaFactory;
 import br.com.conta_bancaria.conta_bancaria.models.*;
 import br.com.conta_bancaria.conta_bancaria.repository.*;
 import br.com.conta_bancaria.conta_bancaria.services.ContaService;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/contas")
+@AllArgsConstructor
 public class ContaController {
 
     private final ContaService contaService;
     private final RepositoryBanco repositoryBanco;
     private final RepositoryCliente repositoryCliente;
-
-    public ContaController(ContaService contaService, RepositoryBanco repositoryBanco, RepositoryCliente repositoryCliente) {
-        this.contaService = contaService;
-        this.repositoryBanco = repositoryBanco;
-        this.repositoryCliente = repositoryCliente;
-    }
 
     @PostMapping
     public ResponseEntity<ApiResponse<ContaResponse>> criarConta(@RequestBody CreateContaRequest request) {
