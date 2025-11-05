@@ -10,6 +10,7 @@ import lombok.*;
 @Getter
 @Setter
 @AllArgsConstructor
+@Builder
 public class ViaCep implements ViaCepDto {
 
     @Id
