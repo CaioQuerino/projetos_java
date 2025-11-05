@@ -4,26 +4,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.RestClientException;
 
-import br.com.conta_bancaria.conta_bancaria.builders.ViaCepBuilder;
 import br.com.conta_bancaria.conta_bancaria.models.ViaCep;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.viacep.ViaCepResponse;
+import br.com.conta_bancaria.conta_bancaria.factorys.viacep.ViaCepFactory;
 import br.com.conta_bancaria.conta_bancaria.interfaces.ViaCepDto;
 import br.com.conta_bancaria.conta_bancaria.repository.ViaCepRepository;
+import lombok.AllArgsConstructor;
 
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class ViaCepService {
 
     private static final String VIA_CEP_URL = "https://viacep.com.br/ws/{cep}/json/";
 
     private final RestTemplate restTemplate;
     private final ViaCepRepository viaCepRepository;
-
-    public ViaCepService(RestTemplate restTemplate, ViaCepRepository viaCepRepository) {
-        this.restTemplate = restTemplate;
-        this.viaCepRepository = viaCepRepository;
-    }
 
     /**
      * Busca endereço no ViaCEP e converte para DTO
@@ -40,14 +37,7 @@ public class ViaCepService {
                 return Optional.empty();
             }
 
-            ViaCep endereco = new ViaCepBuilder()
-                    .cep(response.getCep())
-                    .logradouro(response.getLogradouro())
-                    .bairro(response.getBairro())
-                    .localidade(response.getLocalidade())
-                    .uf(response.getUf())
-                    .build();
-
+            ViaCep endereco = ViaCepFactory.fromCreate(response);
             return Optional.of(endereco);
 
         } catch (RestClientException e) {
