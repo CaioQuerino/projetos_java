@@ -53,7 +53,7 @@ public class ClienteController {
     @PostMapping
     public ResponseEntity<ApiResponse<ClienteResponse>> salvar(@RequestBody CreateClienteRequest request) {
         try {
-            Cliente cliente = ClienteFactory.fromRequest(request);
+            Cliente cliente = ClienteFactory.fromCreate(request);
             Cliente novo = service.salvar(cliente);
             ClienteResponse response = convertToResponse(novo);
             return ResponseEntity.ok(ApiResponse.success("Cliente criado com sucesso", response));
