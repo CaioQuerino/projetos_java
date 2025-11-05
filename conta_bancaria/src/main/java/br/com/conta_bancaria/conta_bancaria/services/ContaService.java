@@ -5,24 +5,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.conta_bancaria.conta_bancaria.models.*;
 import br.com.conta_bancaria.conta_bancaria.repository.*;
+import lombok.AllArgsConstructor;
 
 import java.util.*;
 
 @Service
+@AllArgsConstructor
 public class ContaService {
 
     private final RepositoryConta repositoryConta;
     private final RepositoryBanco repositoryBanco;
     private final RepositoryCliente repositoryCliente;
     private final Random random = new Random();
-
-    public ContaService(RepositoryConta repositoryConta, 
-                       RepositoryBanco repositoryBanco,
-                       RepositoryCliente repositoryCliente) {
-        this.repositoryConta = repositoryConta;
-        this.repositoryBanco = repositoryBanco;
-        this.repositoryCliente = repositoryCliente;
-      }
 
     /**
      * Gera número de conta único (6 dígitos)
