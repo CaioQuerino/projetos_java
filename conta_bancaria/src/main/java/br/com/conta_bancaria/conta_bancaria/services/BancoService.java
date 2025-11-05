@@ -3,24 +3,18 @@ package br.com.conta_bancaria.conta_bancaria.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.conta_bancaria.conta_bancaria.models.*;
 import br.com.conta_bancaria.conta_bancaria.repository.RepositoryBanco;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class BancoService {
 
     private final RepositoryBanco repository;
     private final ViaCepService viaCepService;
-
-
-    @Autowired
-    public BancoService(RepositoryBanco repository, ViaCepService viaCepService) {
-        this.repository = repository;        
-        this.viaCepService = viaCepService;
-    }
 
     public List<Banco> listarTodos() {
         return repository.findAll();
