@@ -74,7 +74,7 @@ public class BancoController {
     @PostMapping
     public ResponseEntity<ApiResponse<BancoResponse>> criarBanco(@RequestBody CreateBancoRequest request) {
         try {
-            Banco banco = BancoFactory.fromRequest(request);
+            Banco banco = BancoFactory.fromCreate(request);
             Banco bancoSalvo = bancoService.salvar(banco);
             BancoResponse response = convertToResponse(bancoSalvo);
             return ResponseEntity.ok(ApiResponse.success("Banco criado com sucesso", response));
