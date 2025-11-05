@@ -1,6 +1,5 @@
 package br.com.conta_bancaria.conta_bancaria.factorys.conta;
 
-import br.com.conta_bancaria.conta_bancaria.builders.ContaBuilder;
 import br.com.conta_bancaria.conta_bancaria.dto.requests.conta.*;
 import br.com.conta_bancaria.conta_bancaria.models.*;
 
@@ -10,22 +9,24 @@ import br.com.conta_bancaria.conta_bancaria.models.*;
 public class ContaFactory {
 
     public static Conta fromCreate(CreateContaRequest request, Cliente cliente, Banco banco) {
-        return new ContaBuilder()
+        Conta conta = Conta.builder()
             .tipoConta(request.getTipoConta())
             .saldo(request.getSaldo())
             .cliente(cliente)
             .banco(banco)
             .senha(request.getSenha())
             .build();
+            return conta;
     }
 
     public static Conta fromUpdate(UpdateContaRequest request, Cliente cliente, Banco banco) {
-        return new ContaBuilder()
+        Conta conta = Conta.builder()
             .tipoConta(request.getTipoConta())
             .saldo(request.getSaldo())
             .cliente(cliente)
             .banco(banco)
             .senha(request.getSenha())
             .build();
+            return conta;
     }
 }
