@@ -2,21 +2,19 @@ package br.com.conta_bancaria.conta_bancaria.services;
 
 import br.com.conta_bancaria.conta_bancaria.models.*;
 import br.com.conta_bancaria.conta_bancaria.repository.RepositoryCliente;
+import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class ClienteService {
 
     private final RepositoryCliente repository;
     private final ViaCepService viaCepService;
-
-    public ClienteService(RepositoryCliente repository, ViaCepService viaCepService) {
-        this.repository = repository;
-        this.viaCepService = viaCepService;
-    }
 
     public List<Cliente> listarTodos() {
         return repository.findAll();
