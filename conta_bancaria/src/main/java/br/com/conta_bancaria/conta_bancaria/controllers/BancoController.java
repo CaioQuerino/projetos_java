@@ -74,7 +74,7 @@ public class BancoController {
     @PostMapping
     public ResponseEntity<ApiResponse<BancoResponse>> criarBanco(@RequestBody CreateBancoRequest request) {
         try {
-            Banco banco = BancoFactory.fromCreate(request);
+            Banco banco = BancoFactory.fromRequest(request);
             Banco bancoSalvo = bancoService.salvar(banco);
             BancoResponse response = convertToResponse(bancoSalvo);
             return ResponseEntity.ok(ApiResponse.success("Banco criado com sucesso", response));
@@ -88,7 +88,7 @@ public class BancoController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<BancoResponse>> atualizarBanco(@PathVariable Long id, @RequestBody UpdateBancoRequest request) {
         try {
-            Banco bancoAtualizado = BancoFactory.fromUpdate(request);
+            Banco bancoAtualizado = BancoFactory.fromRequest(request);
             Banco banco = bancoService.atualizar(id, bancoAtualizado);
             BancoResponse response = convertToResponse(banco);
             return ResponseEntity.ok(ApiResponse.success("Banco atualizado com sucesso", response));
