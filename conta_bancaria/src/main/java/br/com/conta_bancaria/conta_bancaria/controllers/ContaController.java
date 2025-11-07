@@ -33,7 +33,7 @@ public class ContaController {
             Banco banco = repositoryBanco.findById(request.getBancoId())
                 .orElseThrow(() -> new RuntimeException("Banco não encontrado com id: " + request.getBancoId()));
 
-            Conta conta = ContaFactory.fromCreate(request, cliente, banco);
+            Conta conta = ContaFactory.fromRequest(request, cliente, banco);
             Conta novaConta = contaService.criarConta(conta);
             ContaResponse response = convertToResponse(novaConta);
             return ResponseEntity.ok(ApiResponse.success("Conta criada com sucesso", response));
