@@ -1,6 +1,6 @@
 package br.com.conta_bancaria.conta_bancaria.models;
 
-import br.com.conta_bancaria.conta_bancaria.interfaces.ViaCepDto;
+import br.com.conta_bancaria.conta_bancaria.interfaces.ViaCepRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +11,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @Builder
-public class ViaCep implements ViaCepDto {
+public class ViaCep implements ViaCepRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
