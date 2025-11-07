@@ -53,7 +53,7 @@ public class ClienteController {
     @PostMapping
     public ResponseEntity<ApiResponse<ClienteResponse>> salvar(@RequestBody CreateClienteRequest request) {
         try {
-            Cliente cliente = ClienteFactory.fromCreate(request);
+            Cliente cliente = ClienteFactory.fromRequest(request);
             Cliente novo = service.salvar(cliente);
             ClienteResponse response = convertToResponse(novo);
             return ResponseEntity.ok(ApiResponse.success("Cliente criado com sucesso", response));
@@ -66,7 +66,7 @@ public class ClienteController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<ClienteResponse>> atualizar(@PathVariable Long id, @RequestBody UpdateClienteRequest request) {
         try {
-            Cliente clienteAtualizado = ClienteFactory.fromUpdate(request);
+            Cliente clienteAtualizado = ClienteFactory.fromRequest(request);
             Cliente atualizado = service.atualizar(id, clienteAtualizado);
             ClienteResponse response = convertToResponse(atualizado);
             return ResponseEntity.ok(ApiResponse.success("Cliente atualizado com sucesso", response));
