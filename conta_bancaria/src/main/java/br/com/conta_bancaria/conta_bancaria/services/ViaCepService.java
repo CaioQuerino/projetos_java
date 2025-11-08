@@ -7,7 +7,6 @@ import org.springframework.web.client.RestClientException;
 import br.com.conta_bancaria.conta_bancaria.models.ViaCep;
 import br.com.conta_bancaria.conta_bancaria.dto.responses.viacep.ViaCepResponse;
 import br.com.conta_bancaria.conta_bancaria.factorys.viacep.ViaCepFactory;
-import br.com.conta_bancaria.conta_bancaria.interfaces.ViaCepDto;
 import br.com.conta_bancaria.conta_bancaria.repository.ViaCepRepository;
 import lombok.AllArgsConstructor;
 
@@ -25,7 +24,7 @@ public class ViaCepService {
     /**
      * Busca endereço no ViaCEP e converte para DTO
      */
-    private Optional<ViaCepDto> buscarEndereco(String cep) {
+    private Optional<ViaCep> buscarEndereco(String cep) {
         if (cep == null || !cep.matches("\\d{8}")) {
             return Optional.empty();
         }
@@ -37,7 +36,7 @@ public class ViaCepService {
                 return Optional.empty();
             }
 
-            ViaCep endereco = ViaCepFactory.fromCreate(response);
+            ViaCep endereco = ViaCepFactory.fromRequest(response);
             return Optional.of(endereco);
 
         } catch (RestClientException e) {
@@ -61,7 +60,7 @@ public class ViaCepService {
             return enderecoExistente.get();
         }
 
-        Optional<ViaCepDto> enderecoViaCep = buscarEndereco(cepLimpo);
+        Optional<ViaCep> enderecoViaCep = buscarEndereco(cepLimpo);
 
         if (enderecoViaCep.isPresent() && enderecoViaCep.get() instanceof ViaCep novoEndereco) {
             novoEndereco.setCep(cepLimpo);
